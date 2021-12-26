@@ -50,9 +50,9 @@ packadd asyncomplete-lsp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 packadd vim-fugitive
 nnoremap <leader>gw :Gwrite<CR>
-nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gc :Git commit<CR>
 nnoremap <leader>gp :Git push<CR>
-nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gs :Git<CR>
 nnoremap <leader>gl :Git log<CR>
 nnoremap <leader>gd :Gvdiffsplit<CR>
 nnoremap <leader>gb :Git blame<CR>
