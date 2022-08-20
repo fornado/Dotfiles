@@ -26,6 +26,8 @@ set nowritebackup
 set noundofile
 set novisualbell
 set nocursorline
+set noerrorbells
+set vb t_vb=
 
 set autoread
 set splitbelow
@@ -36,17 +38,30 @@ set incsearch
 set ignorecase
 set smartcase
 
+set diffopt+=vertical
+
+
+" system paste board
+inoremap <c-v> <c-r>+
+inoremap <c-l> <right>
+
 inoremap jk <esc>
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :w<cr>
 
 nnoremap <silent> <F2> :vs $MYVIMRC<cr>
-nnoremap <silent> <F3> :vs ~/Documents/repo/Dotfiles/vimfiles/.vim/.vimrc<cr>
-nnoremap <silent> <F4> :!cp ~/Documents/repo/Dotfiles/vimfiles/.vim/.vimrc ~/.vim/vimrc<cr>
+nnoremap <silent> <F3> :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
+nnoremap <silent> <F4> :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc ~/.vim/vimrc<cr>
 nnoremap <silent> <F6> :source $MYVIMRC<cr>
 
-nnoremap <c-l> :<c-u>nohls<cr>
+nnoremap <c-l> :<c-u>nohls<cr><c-l>
 
+nnoremap <leader>tn :<c-u>tabnew<cr>
+nnoremap <leader>tc :<c-u>tabclose<cr>
+nnoremap [t :<c-u>tabprevious<cr>
+nnoremap ]t :<c-u>tabnext<cr>
+
+nnoremap <leader>cc :<c-u>cclose<cr>
 
 " tags
 set tags=./.tags;,.tags
@@ -174,7 +189,7 @@ au BufNewFile,BufRead *.html,*.js,*.vue set softtabstop=2
 au BufNewFile,BufRead *.html,*.js,*.vue set shiftwidth=2
 au BufNewFile,BufRead *.html,*.js,*.vue set expandtab
 au BufNewFile,BufRead *.html,*.js,*.vue set autoindent
-au BufNewFile,BufRead *.html,*.js,*.vue set fileformat=unix
+au BufNewFile,BufRead *.html,*.js,*.vue set fileformat=dos
 au FileType vue syntax sync fromstart
 
 " emmet-vim
