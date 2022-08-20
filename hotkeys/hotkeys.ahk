@@ -2,12 +2,39 @@
 ;http://ahkcn.sourceforge.net/docs/Hotkeys.htm
 ;https://blog.csdn.net/u013332124/article/details/80680038
 
-;{CapsLock}e::^e
-!m::
-WinMinimize,A
+;;;;;;;;;;Control mappings
+^a::
+Send {Home}
 return
 
-;!{space}::#q
+^e::
+Send {End}
+return
+
+^b::
+Send {Left}
+return
+
+^h::
+Send {BackSpace}
+return
+
+;^l::
+;Send {Right}
+;return
+
+;^w::
+;Send ^{BackSpace}
+;return
+
+;;;;;;;;;;Alt mappings
+!m::WinMinimize, A
+
+!Enter::WinMaximize, A
+
+!s::
+Send #s
+return
 
 !b::
 Send ^c
