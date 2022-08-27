@@ -177,19 +177,21 @@ let g:ale_linters = {
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'vue': ['prettier','remove_trailing_lines', 'trim_whitespace'],
+\   'vue': ['prettier'],
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
 \}
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 """ vue
-au BufNewFile,BufRead *.html,*.js,*.vue set tabstop=2
-au BufNewFile,BufRead *.html,*.js,*.vue set softtabstop=2
-au BufNewFile,BufRead *.html,*.js,*.vue set shiftwidth=2
-au BufNewFile,BufRead *.html,*.js,*.vue set expandtab
-au BufNewFile,BufRead *.html,*.js,*.vue set autoindent
-au BufNewFile,BufRead *.html,*.js,*.vue set fileformat=dos
+au BufNewFile,BufRead *.html,*.javascript,*.vue set tabstop=2
+au BufNewFile,BufRead *.html,*.javascript,*.vue set softtabstop=2
+au BufNewFile,BufRead *.html,*.javascript,*.vue set shiftwidth=2
+au BufNewFile,BufRead *.html,*.javascript,*.vue set expandtab
+au BufNewFile,BufRead *.html,*.javascript,*.vue set autoindent
+au BufNewFile,BufRead *.html,*.javascript,*.vue set fileformat=dos
 au FileType vue syntax sync fromstart
 
 " emmet-vim
