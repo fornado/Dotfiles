@@ -63,6 +63,9 @@ nnoremap ]t :<c-u>tabnext<cr>
 
 nnoremap <leader>cc :<c-u>cclose<cr>
 
+" select last paste in visual mode
+nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+
 " tags
 set tags=./.tags;,.tags
 
