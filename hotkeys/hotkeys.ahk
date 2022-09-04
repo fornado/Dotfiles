@@ -19,6 +19,14 @@ return
 Send {BackSpace}
 return
 
+;^p::
+;Send {UP}
+;return
+
+;^n::
+;Send {DOWN}
+;return
+
 ;^l::
 ;Send {Right}
 ;return

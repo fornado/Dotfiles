@@ -79,7 +79,8 @@ if !exists('g:terminal_rootmarkers')
 	let g:terminal_rootmarkers = ['.git', '.svn', '.project', '.root', '.hg']
 endif
 
-nnoremap <c-=> :<c-u>call TerminalOpen()<cr>
+nnoremap yot :<c-u>call TerminalToggle()<cr>
+tnoremap yot <c-w>:<c-u>call TerminalToggle()<cr>
 
 "----------------------------------------------------------------------
 " internal utils
@@ -130,7 +131,6 @@ function! CheckIsCreated(bid)
 	let l:name = bufname(l:bid)
 	let l:isCreated = 0
 	if l:name != ''
-		echomsg('has created before, name: ' . name)
 		let l:wid = bufwinnr(l:bid)
 		if l:wid < 0
 			call CreateAWindow()
@@ -157,7 +157,6 @@ function! CreateAJob()
 	let jid = term_getjob(bid)
 	let b:__terminal_jid__ = jid
 
-	echomsg('start a job, term bufferid: ' . bid)
 	return bid
 endfunction
 
@@ -190,7 +189,6 @@ function! CreateTerminalWindow()
 	if &bt == ''
 		if g:terminal_cwd == 1
 			let workdir = (expand('%') == '')? getcwd() : expand('%:p:h')
-			echomsg('cd to current workdir: '. workdir)
 			silent execute cd . ' '. fnameescape(workdir)
 		elseif g:terminal_cwd == 2
 			silent execute cd . ' '. fnameescape(s:project_root())
@@ -202,7 +200,6 @@ function! CreateTerminalWindow()
 	" create a job at current windown
 	let bid = CreateAJob()
 	let t:__terminal_bid__ = bid
-	echomsg('save ter bufnr: ' . t:__terminal_bid__)
 
 	" restore &cwd
 	silent execute cd . ' '. fnameescape(savedir)
@@ -221,27 +218,20 @@ function! TerminalOpen(...)
 	function! s:terminal_view(mode)
 		if a:mode == 0
 			let w:__terminal_view__ = winsaveview()
-			echomsg('win saveview: ')
-			echomsg(w:__terminal_view__)
 		elseif exists('w:__terminal_view__')
 			call winrestview(w:__terminal_view__)
-			echomsg('win restview: ')
-			echomsg(w:__terminal_view__)
 			unlet w:__terminal_view__
 		endif
 	endfunc
 
 	" let uid = win_getid()
-	" echomsg('current uid ' . uid)
 	" keepalt noautocmd windo call s:terminal_view(0)
-	"echomsg('gotowinid: ' . uid)
 	" keepalt noautocmd call win_gotoid(uid)
 	" terminal has created before
 	let succeed = CheckIsCreated(bid)
 
 	" new create
 	if succeed == 0
-		echomsg('need create a ter job')
 		" create a window
 		call CreateTerminalWindow()
 	endif
@@ -270,13 +260,11 @@ function! TerminalClose()
 	if wid < 0
 		return
 	endif
-	echomsg('begin to close ter')
 	" let sid = win_getid()
 	" noautocmd windo call s:terminal_view(0)
 	" call win_gotoid(sid)
 	" if cur window not the same with ter window
 	if wid != winnr()
-		echomsg('not the same with ter window')
 		let uid = win_getid()
 		exec "normal! ". wid . "\<c-w>w"
 		close
@@ -288,14 +276,12 @@ function! TerminalClose()
 	" noautocmd windo call s:terminal_view(1)
 	" call win_gotoid(sid)
 	let jid = getbufvar(bid, '__terminal_jid__', -1)
-	echomsg('jid: ' . jid)
 
 	let dead = 0
 	if type(jid) == v:t_job
 		let dead = (job_status(jid) == 'dead')? 1 : 0
 	endif
 	if dead
-		echomsg('bdelete dead job terminal window: ' . bid)
 		exec 'bdelete! '. bid
 	endif
 endfunc
@@ -306,7 +292,6 @@ endfunc
 "----------------------------------------------------------------------
 function! TerminalToggle()
 	let alive = TerminalIsActive()
-	echomsg('cur ter is alive: ' . alive)
 	if alive == 0
 		call TerminalOpen()
 	else
@@ -319,7 +304,6 @@ endfunc
 " process exit callback
 "----------------------------------------------------------------------
 function! s:terminal_exit(...)
-	echomsg('terminal exit')
 	let close = get(g:, 'terminal_close', 0)
 	if close != 0
 		let alive = TerminalIsActive()
@@ -336,7 +320,6 @@ function! TerminalIsActive()
 	let alive = 0
 	if bid > 0 && bufname(bid) != ''
 		let alive = (bufwinnr(bid) > 0)? 1 : 0
-		echomsg('ter window is alive: ' . alive)
 	endif
 	return alive
 endfunction

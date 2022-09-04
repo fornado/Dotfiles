@@ -42,7 +42,7 @@ set diffopt+=vertical
 
 
 " system paste board
-inoremap <c-v> <c-r>+
+"inoremap <c-v> <c-r>+
 inoremap <c-l> <right>
 
 inoremap jk <esc>
@@ -52,6 +52,7 @@ nnoremap <leader>w :w<cr>
 nnoremap <silent> <F2> :vs $MYVIMRC<cr>
 nnoremap <silent> <F3> :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
 nnoremap <silent> <F4> :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc ~/.vim/vimrc<cr>
+nnoremap <silent> <F5> :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/ftplugin/vue.vim ~/.vim/ftplugin/vue.vim<cr>
 nnoremap <silent> <F6> :source $MYVIMRC<cr>
 
 nnoremap <c-l> :<c-u>nohls<cr><c-l>
@@ -130,6 +131,7 @@ Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'
 
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'kana/vim-textobj-user'
 
 call plug#end()
 
@@ -141,7 +143,7 @@ let g:airline#extensions#ale#enabled = 1
 let g:airline_theme='onedark'
 
 " Nerdtree
-nnoremap <leader>ne :<c-u>NERDTreeToggle<cr>
+nnoremap yon :<c-u>NERDTreeToggle<cr>
 
 " onedark.vim
 if (empty($TMUX))
@@ -165,7 +167,7 @@ let g:ale_sign_warning = '--'
 
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_insert_leave = 0
 let g:ale_completion_enabled = 1
 
 let g:ale_set_loclist = 0
@@ -227,6 +229,23 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 " 检测 ~/.cache/tags 不存在就新建
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
-   endif
+endif
+
+
+" vim-unimpaired'
+" use [o to open a option, e.g. [ob to open 'background' option, b is
+" 'background'
+" use ]o to close a option, e.g. ]ob to close 'background' option
+
+"
+" use [ or ] to move backwards or forwards in normal mode
+" use {[|]}{a|b|l|q|t} to revious or next obj, the uppercase to first/last
+" one;
+" use [f
+"
+" use {>|<|=|[|]}{p|P} to incre/decre/equal indent after paste at under or up line
+" use {[|]}{p|P} to preserve matching indent behavior after paste at under or up line
+"
+" use
 
 silent! helptags ALL
