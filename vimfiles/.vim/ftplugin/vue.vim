@@ -1,3 +1,15 @@
+
+" buffer maps
+nnoremap <buffer> <leader>b :<c-u>call <SID>JumpBlocks(1)<cr>
+nnoremap <buffer> <leader>e :<c-u>call <SID>JumpBlocks(0)<cr>
+vnoremap <buffer> am :<c-u>call <SID>AddMethod()<cr>
+
+if exists('g:load_ft_vue_vim')
+  finish
+endif
+
+let g:load_ft_vue_vim = 1
+
 " options
 setlocal scrolloff=2
 setlocal tabstop=2
@@ -21,15 +33,15 @@ endfunction
 
 " jump =====================================================
 " jump between blocks:
-nnoremap <buffer> <leader>b :<c-u>call <SID>JumpBlocks(1)<cr>
-nnoremap <buffer> <leader>e :<c-u>call <SID>JumpBlocks(0)<cr>
+" nnoremap <buffer> <leader>b :<c-u>call <SID>JumpBlocks(1)<cr>
+" nnoremap <buffer> <leader>e :<c-u>call <SID>JumpBlocks(0)<cr>
 
 function! s:JumpBlocks(start)
 	let char = nr2char(getchar())
 	if char == 'm'
-		call <SID>LocateMethod(start)
+		call <SID>LocateMethod(a:start)
 	elseif char == 'f'
-		call <SID>LocateFunc(start)
+		call <SID>LocateFunc(a:start)
 	else
 		echo 'char ' . char . ' not support'
 	endif
@@ -41,11 +53,11 @@ endfunction
 " methods
 " m: methods obj
 " bm: begin of methods
-nnoremap bm :<c-u>call <SID>LocateMethod(1)<cr>
-nnoremap em :<c-u>call <SID>LocateMethod(0)<cr>
+" nnoremap bm :<c-u>call <SID>LocateMethod(1)<cr>
+" nnoremap em :<c-u>call <SID>LocateMethod(0)<cr>
 
 " add a method, type am then `a` or other to choice location
-vnoremap am :<c-u>call <SID>AddMethod()<cr>
+" vnoremap am :<c-u>call <SID>AddMethod()<cr>
 
 " add a method at the end of methods block
 function! s:AddMethod()
@@ -72,8 +84,14 @@ endfunction
 
 " function ==========================================
 " f: function obj
-function! s:LocateFunc(start)
-	" let original = getcurpos('.')
+nnoremap daf :<c-u>call <SID>DeleteCurFunc()<cr>
+function! s:DeleteCurFunc()
+	call s:SelectCurFunc()
+	normal! d
+endfunction
+
+function! s:SelectCurFunc()
+	" let original = getcurpo('.')
 	let lastpos = getcurpos('.')
 
 	" search for } at cur line
@@ -100,8 +118,14 @@ function! s:LocateFunc(start)
 		return
 	endif
 
-	exe 'normal! ' . '^V$%' . (a:start ? 'O' : '') . "\<esc>"
+	execute 'normal! ' . '^V$%'
 endfunction
+
+function! s:LocateFunc(start)
+	call s:SelectCurFunc()
+	exe 'normal! ' . (a:start ? 'O' : '') . "\<esc>"
+endfunction
+
 " [f: previous function
 " ]f: next function
 " bf: begin of function
@@ -119,7 +143,7 @@ endfunction
 " im: inner of b
 "
 " abbreviate
-inoreab <buffer> cl console.log()<Left>
+inoreab cl console.log()<Left>
 " cl(name, 'name')
 " fn: function(`tag`)
 " fe: forEach(item => tag)

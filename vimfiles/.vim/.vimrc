@@ -37,26 +37,27 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
-
 set diffopt+=vertical
-
 
 " system paste board
 "inoremap <c-v> <c-r>+
 inoremap <c-l> <right>
-
 inoremap jk <esc>
+
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :w<cr>
 
 nnoremap <silent> <F2> :vs $MYVIMRC<cr>
 nnoremap <silent> <F3> :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
-nnoremap <silent> <F4> :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc ~/.vim/vimrc<cr>
-nnoremap <silent> <F5> :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/ftplugin/vue.vim ~/.vim/ftplugin/vue.vim<cr>
+nnoremap <silent> <F5> :<c-u>call <SID>SaveConfig()<cr>
 nnoremap <silent> <F6> :source $MYVIMRC<cr>
 
-nnoremap <c-l> :<c-u>nohls<cr><c-l>
+function! s:SaveConfig()
+  :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc ~/.vim/vimrc
+  :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/ftplugin/vue.vim ~/.vim/ftplugin/vue.vim
+endfunction
 
+nnoremap <c-l> :<c-u>nohls<cr><c-l>
 nnoremap <leader>tn :<c-u>tabnew<cr>
 nnoremap <leader>tc :<c-u>tabclose<cr>
 nnoremap [t :<c-u>tabprevious<cr>
@@ -132,6 +133,7 @@ Plug 'jiangmiao/auto-pairs'
 
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'kana/vim-textobj-user'
+Plug 'tomtom/tcomment_vim'
 
 call plug#end()
 
