@@ -2,6 +2,11 @@
 unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
+let g:iswindows = 0
+if(has("win32") || has("win64") || has("win95") || has("win16") || has("win32unix"))
+  let g:iswindows = 1
+endif
+
 " Basic
 let mapleader = ","
 
@@ -198,7 +203,7 @@ au BufNewFile,BufRead *.html,*.javascript,*.vue set softtabstop=2
 au BufNewFile,BufRead *.html,*.javascript,*.vue set shiftwidth=2
 au BufNewFile,BufRead *.html,*.javascript,*.vue set expandtab
 au BufNewFile,BufRead *.html,*.javascript,*.vue set autoindent
-au BufNewFile,BufRead *.html,*.javascript,*.vue set fileformat=dos
+" au BufNewFile,BufRead *.html,*.javascript,*.vue set fileformat=dos
 au FileType vue syntax sync fromstart
 
 " emmet-vim

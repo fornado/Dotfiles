@@ -1,24 +1,26 @@
-" buffer maps
-nnoremap <buffer> <leader>b :<c-u>call <SID>JumpBlocks(1)<cr>
-nnoremap <buffer> <leader>e :<c-u>call <SID>JumpBlocks(0)<cr>
-vnoremap <buffer> am :<c-u>call <SID>AddMethod()<cr>
-
-if exists('g:load_ft_vue_vim')
-  finish
-endif
-
-let g:load_ft_vue_vim = 1
+" if exists('g:load_ft_vue_vim')
+"   finish
+" endif
+"
+" let g:load_ft_vue_vim = 1
 
 " options
 setlocal scrolloff=2
 setlocal tabstop=2
 
 " tags
-let s:method_tag = 'methods:'
-let s:computed_tag = 'computed:'
+let s:tag_method = 'methods:'
+let s:tag_computed = 'computed:'
+let s:tag_data = 'data:'
 
 " pattern
 let s:func_patern = '\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
+
+" buffer maps
+nnoremap <buffer> <leader>b :<c-u>call <SID>JumpBlocks(1)<cr>
+nnoremap <buffer> <leader>e :<c-u>call <SID>JumpBlocks(0)<cr>
+vnoremap <buffer> ap :<c-u>call <SID>AddProperty()<cr>
+
 
 " get text of selected
 function! s:GetVisualSelection()
@@ -30,60 +32,70 @@ function! s:GetVisualSelection()
   return join(lines, "\n")
 endfunction
 
-" jump =====================================================
-" jump between blocks:
-" nnoremap <buffer> <leader>b :<c-u>call <SID>JumpBlocks(1)<cr>
-" nnoremap <buffer> <leader>e :<c-u>call <SID>JumpBlocks(0)<cr>
-
-function! s:JumpBlocks(start)
-	let char = nr2char(getchar())
+" map input char to tag name
+function! Mapper(char)
+	let l:char = a:char
 	if char == 'm'
-		call <SID>LocateMethod(a:start)
+		return s:tag_method
 	elseif char == 'f'
-		call <SID>LocateFunc(a:start)
+		return s:func_patern
+	elseif char == 'c'
+		return s:tag_computed
+	elseif char == 'd'
+		return s:tag_data
 	else
-		echo 'char ' . char . ' not support'
+		echo 'char ' . char . ' not support mapper'
 	endif
 endfunction
 
+" jump =====================================================
+function! s:JumpBlocks(start)
+	let char = nr2char(getchar())
+  let tag = Mapper(char)
+  if tag == s:func_patern
+		call <SID>LocateFunc(a:start)
+  else
+		call <SID>LocateTag(tag, a:start)
+  endif
+endfunction
 
-" textobj =================================================
-"
-" methods
-" m: methods obj
-" bm: begin of methods
-" nnoremap bm :<c-u>call <SID>LocateMethod(1)<cr>
-" nnoremap em :<c-u>call <SID>LocateMethod(0)<cr>
-
-" add a method, type am then `a` or other to choice location
-" vnoremap am :<c-u>call <SID>AddMethod()<cr>
 
 " add a method at the end of methods block
-function! s:AddMethod()
+function! s:AddProperty()
 	let mdsign = <SID>GetVisualSelection()
 	let char = nr2char(getchar())
-	let start = char == 'a' ? 0 : 1
+	let start = char == 'i' ? 1 : 0
 
-	call <SID>LocateMethod(start)
-	execute 'normal! ' . (char == 'a' ? 'o' : 'O') . mdsign . ' {},'
+	let tag = nr2char(getchar())
+	let tag = Mapper(tag)
+
+	let cmd = (char == 'i' ? 'O' : 'o')
+	if tag == s:tag_data
+		let cmd = (char == 'i' ? 'o' : 'O')
+	endif
+
+	let suffix = ' {},'
+	if tag == s:tag_data
+		let suffix = ': '
+	endif
+
+	call <SID>LocateTag(tag, start)
+	execute 'normal! ' . cmd . mdsign . suffix
 	execute 'normal! h'
 endfunction
 
-function! s:LocateMethod(start)
-	call search('\<' . s:method_tag, 'c')
+
+function! s:LocateTag(tag, start)
+	call search('\<' . a:tag, 'c')
 	execute 'normal! ' . (a:start ? 'j^' : '$%kg_')
 endfunction
-
-" em: end of methods
-" im: inner of methods
-" am: around of methods
-" bmi: begin of methods, then into insert mode
-" ema: end of methods, then into insert mode
 
 
 " function ==========================================
 " f: function obj
 nnoremap daf :<c-u>call <SID>DeleteCurFunc()<cr>
+nnoremap caf :<c-u>call <SID>SelectCurFunc()<cr>
+
 function! s:DeleteCurFunc()
 	call s:SelectCurFunc()
 	normal! d
@@ -125,6 +137,7 @@ function! s:LocateFunc(start)
 	exe 'normal! ' . (a:start ? 'O' : '') . "\<esc>"
 endfunction
 
+"
 " [f: previous function
 " ]f: next function
 " bf: begin of function
