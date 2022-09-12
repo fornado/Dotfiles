@@ -250,4 +250,5 @@ endif
 "
 " use
 
+colorscheme oneDark
 silent! helptags ALL
