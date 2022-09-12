@@ -1,4 +1,3 @@
-
 " buffer maps
 nnoremap <buffer> <leader>b :<c-u>call <SID>JumpBlocks(1)<cr>
 nnoremap <buffer> <leader>e :<c-u>call <SID>JumpBlocks(0)<cr>
@@ -156,3 +155,4 @@ inoreab cl console.log()<Left>
 " fold all
 " unfold all
 " unfold self only
+setlocal foldmethod=indent
