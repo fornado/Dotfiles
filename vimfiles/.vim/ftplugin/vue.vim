@@ -9,12 +9,14 @@ setlocal scrolloff=2
 setlocal tabstop=2
 
 " tags
+let s:tag_prefix = '^\s\+\<'
+let s:tag_sufix = '\s\+{'
 let s:tag_method = 'methods:'
 let s:tag_computed = 'computed:'
-let s:tag_data = 'data:'
+let s:tag_data = '\(\(data:\s\+function\s\?()\)\|\(data()\)\)'
 
 " pattern
-let s:func_patern = '\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
+let s:func_patern = '^\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
 
 " buffer maps
 nnoremap <buffer> <leader>b :<c-u>call <SID>JumpBlocks(1)<cr>
@@ -86,7 +88,8 @@ endfunction
 
 
 function! s:LocateTag(tag, start)
-	call search('\<' . a:tag, 'c')
+	" call search('\<' . a:tag, 'c')
+  call search(s:tag_prefix . a:tag . s:tag_sufix)
 	execute 'normal! ' . (a:start ? 'j^' : '$%kg_')
 endfunction
 
