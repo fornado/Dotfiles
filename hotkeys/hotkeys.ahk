@@ -50,11 +50,11 @@ sleep,100
 run https://www.baidu.com/s?wd=%clipboard%&rsv_spt=1&rsv_iqid=0x84bc1e1400076d64&issp=1&f=8&rsv_bp=1&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=1&rsv_dl=tb&rsv_sug3=6&rsv_sug1=4&rsv_sug7=101&rsv_sug2=0&rsv_btype=i&prefixsug=%clipboard%&rsp=7&inputT=1210&rsv_sug4=3228
 return
 
-!d::
-Send {Home}
-Send +{End}
-Send {delete}
-return
+;!d::
+;Send {Home}
+;Send +{End}
+;Send {delete}
+;return
 
 !y::
 Send {Home}
@@ -72,7 +72,7 @@ return
 run f:
 return
 
-;CapsLock::Ctrl
+CapsLock::Ctrl
 
 tmp_path=f:
 typora_path=F:\downloads\Typora\Typora.exe
