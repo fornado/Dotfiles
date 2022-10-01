@@ -1,0 +1,6 @@
+--langdef=vue
+--map-vue=.vue
+
+# component name
+--kinddef-vue=n,name,name of vue component
+--regex-vue=/^\s{2,4}name\s?:[ \t]{0,2}"(\w+)",?/\1/n/
