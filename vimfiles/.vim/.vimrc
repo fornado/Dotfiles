@@ -62,6 +62,9 @@ function! s:SaveConfig()
   :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/ftplugin/vue.vim ~/.vim/ftplugin/vue.vim
 endfunction
 
+" buffer {{{
+command! BufOnly execute '%bdelete|edit#|bdelete#'
+
 " file
 if has("win32unix")
   nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
@@ -301,6 +304,6 @@ let g:gutentags_ctags_tagfile = '.tags'
 " use {[|]}{p|P} to preserve matching indent behavior after paste at under or up line
 "
 " use
-
+"
 colorscheme oneDark
 silent! helptags ALL
