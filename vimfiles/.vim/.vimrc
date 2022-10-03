@@ -52,10 +52,10 @@ inoremap jk <esc>
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :w<cr>
 
-nnoremap <silent> <F2> :vs $MYVIMRC<cr>
-nnoremap <silent> <F3> :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
-nnoremap <silent> <F5> :<c-u>call <SID>SaveConfig()<cr>
-nnoremap <silent> <F6> :source $MYVIMRC<cr>
+nnoremap <silent> <space>e :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
+nnoremap <silent> <space>w :<c-u>call <SID>SaveConfig()<cr>
+nnoremap <silent> <space>so :<c-u>so %<cr>
+nnoremap <silent> <space>sm :<c-u>so $MYVIMRC<cr>
 
 function! s:SaveConfig()
   :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc ~/.vim/vimrc
@@ -170,12 +170,53 @@ if (empty($TMUX))
 	endif
 endif
 
-" fzf.vim
+" fzf.vim {{{
 nnoremap <leader>ff :<c-u>Files<cr>
+nnoremap <leader>fgf :<c-u>GFiles<cr>
+nnoremap <leader>fgs :<c-u>GFiles?<cr>
+nnoremap <leader>fag :<c-u>Ag<cr>
 nnoremap <leader>fb :<c-u>Buffers<cr>
 nnoremap <leader>fl :<c-u>Lines<cr>
+nnoremap <leader>fbl :<c-u>BLines<cr>
+nnoremap <leader>ft :<c-u>Tags<cr>
+nnoremap <leader>fbt :<c-u>BTags<cr>
 
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'relative': v:true, 'yoffset': 1.0 } }
+" map char to command
+function! FzfChar2Cmd(char)
+	let l:char = a:char
+	if char ==# 'f'
+		return 'Files'
+	elseif char ==# 'g'
+		return 'GFiles?'
+	elseif char ==# 'a'
+		return 'Ag'
+	elseif char ==# 'b'
+		return 'Buffers'
+	elseif char ==# 'l'
+		return 'Lines'
+	elseif char ==# 'L'
+		return 'BLines'
+	elseif char ==# 't'
+		return 'Tags'
+	elseif char ==# 'T'
+		return 'BTags'
+	else
+		return '-1'
+		echomsg 'char ' . char . ' not support mapper'
+	endif
+endfunction
+
+" search cword or @" of word by scope
+function! FzfSearchCurrent(str)
+  let char = getcharstr()
+  let cmd = FzfChar2Cmd(char)
+  if cmd !=# '-1'
+	execute cmd . ' ' . a:str
+  endif
+endfunction
+
+nnoremap <silent> <leader>s :<c-u>call FzfSearchCurrent(expand('<cword>'))<cr>
+vnoremap <silent> <leader>s y:<c-u>call FzfSearchCurrent(escape(@",'"*?()[]{}.'))<cr>
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
@@ -213,9 +254,9 @@ let g:fzf_colors = {
 "   'previous-history' instead of 'down' and 'up'.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-" ag
-nnoremap <leader>ss :<c-u>Ag<space><c-r>=expand('<cword>')<cr><cr>
-vnoremap <leader>ss y:Ag<space><c-r>=escape(@",'"*?()[]{}.')<cr><cr>
+" ag{{{
+" nnoremap <leader>ss :<c-u>Ag<space><c-r>=expand('<cword>')<cr><cr>
+" vnoremap <leader>ss y:Ag<space><c-r>=escape(@",'"*?()[]{}.')<cr><cr>
 
 " ale.vim
 " let g:ale_sign_column_always = 1
@@ -304,6 +345,6 @@ let g:gutentags_ctags_tagfile = '.tags'
 " use {[|]}{p|P} to preserve matching indent behavior after paste at under or up line
 "
 " use
-"
+
 colorscheme oneDark
 silent! helptags ALL
