@@ -52,6 +52,8 @@ inoremap jk <esc>
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :w<cr>
 
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
+
 nnoremap <silent> <space>e :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
 nnoremap <silent> <space>w :<c-u>call <SID>SaveConfig()<cr>
 nnoremap <silent> <space>so :<c-u>so %<cr>
