@@ -55,6 +55,7 @@ nnoremap <leader>w :w<cr>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
 
 nnoremap <silent> <space>e :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
+nnoremap <silent> <space>t :vs ~/.ctags.d/vue.ctags<cr>
 nnoremap <silent> <space>w :<c-u>call <SID>SaveConfig()<cr>
 nnoremap <silent> <space>so :<c-u>so %<cr>
 nnoremap <silent> <space>sm :<c-u>so $MYVIMRC<cr>
@@ -62,6 +63,7 @@ nnoremap <silent> <space>sm :<c-u>so $MYVIMRC<cr>
 function! s:SaveConfig()
   :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc ~/.vim/vimrc
   :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/ftplugin/vue.vim ~/.vim/ftplugin/vue.vim
+  :!cp ~/.ctags.d/vue.ctags ~/Documents/projects/Dotfiles/ctags/
 endfunction
 
 " buffer {{{
@@ -173,6 +175,13 @@ if (empty($TMUX))
 endif
 
 " fzf.vim {{{
+" command! -bang Files call fzf#run(fzf#wrap({'source': 'ls'}, <bang>0))
+" command! -bang Tags call fzf#run(fzf#wrap({'source': ['c|1','m|2','f|3','c|4']}, <bang>0))
+" command! -bang Tags call fzf#run(fzf#wrap({'source': TagsList(), 'sink': 'tabedit'}, <bang>0))
+" command! -bang Tags call fzf#run(fzf#wrap({'source': TagsList(), 'sink': SinkSingle()}, <bang>0))
+command! -bang Tags call fzf#run(fzf#wrap({'source': TagsList(), 'sink': function('SinkSingle')}, <bang>0))
+" command! -bang Tags call fzf#run(fzf#wrap({'source': 'ls'}, <bang>0))
+
 nnoremap <leader>ff :<c-u>Files<cr>
 nnoremap <leader>fgf :<c-u>GFiles<cr>
 nnoremap <leader>fgs :<c-u>GFiles?<cr>
@@ -182,6 +191,48 @@ nnoremap <leader>fl :<c-u>Lines<cr>
 nnoremap <leader>fbl :<c-u>BLines<cr>
 nnoremap <leader>ft :<c-u>Tags<cr>
 nnoremap <leader>fbt :<c-u>BTags<cr>
+
+" tags list
+function! TagsList()
+  let filename = '/c/Users/tony5/Documents/projects/demo/vuedemo/demo/src/.tags'
+  let list = []
+  for line in readfile(filename, '')
+    if match(line, '^!_TAG') != -1 | continue | endif
+    let arr = matchlist(line, '\v^(\w+)\t([a-zA-Z/0-9.@]+)\t.*;"\t(\w)\t?([a-zA-Z:0-9]{0,})')
+    if !empty(arr)
+      " echomsg 'arr:'
+      " echomsg arr
+      let name = get(arr, 1, '')
+      let src = get(arr, 2, '')
+      let kind = get(arr, 3, '')
+      " echomsg 'name: ' . name
+      " echomsg 'src: ' . src
+      " echomsg 'kind: ' . kind
+	" let kind = get(extend, 0, '')
+      let line = kind . '|' . name . ' ' . src
+        " let kind = substitute(line, '\v.*;"\t(\w+)(\t.*)?', '\1', '')
+      call add(list, line)
+    endif
+  endfor
+  return list
+endfunction
+
+function! SinkSingle(args)
+  let index = stridx(a:args, ' ')
+  if index != -1
+    let filepath = strpart(a:args, index)
+    let char = getcharstr()
+    let cmd = 'e'
+    if char == 'x'
+      let cmd = 'sp'
+    elseif char == 'v'
+      let cmd = 'vs'
+    elseif char == 't'
+      let cmd = 'tabedit'
+    endif
+    execute cmd . ' ' . filepath
+  endif
+endfunction
 
 " map char to command
 function! FzfChar2Cmd(char)
@@ -312,7 +363,8 @@ au FileType vue syntax sync fromstart
 
 " gutentags
 " 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+" let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+let g:gutentags_project_root = ['.root']
 
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'

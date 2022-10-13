@@ -1,0 +1,18 @@
+--langdef=vue
+--map-vue=.vue
+
+--kinddef-vue=n,name,name of vue component
+--kinddef-vue=m,method,method tag of vue
+--kinddef-vue=f,func,func tag of vue
+
+# component name
+--regex-vue=/^\s{2,4}name\s?:[ \t]{0,2}"(\w+)",?/\1/n/
+
+# methods tag
+--regex-vue=/^\s{2}(methods):\s?\{$/\1/m/{scope=push}
+--regex-vue=/^\s{2}\},?$///{scope=pop}{placeholder}
+
+--regex-vue=/^\s{4}(\w+)\(\)\s?\{$/\1/f/{scope=push}
+--regex-vue=/^\s{4}\},?$///{scope=pop}{placeholder}
+
+#aaaa
