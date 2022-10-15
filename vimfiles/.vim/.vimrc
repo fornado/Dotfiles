@@ -90,6 +90,15 @@ nnoremap <leader>cc :<c-u>cclose<cr>
 
 " select last paste in visual mode
 nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+xnoremap * :<c-u>call <SID>VSetSearch()<cr>/<c-r>=@/<cr><cr>
+xnoremap # :<c-u>call <SID>VSetSearch()<cr>?<c-r>=@/<cr><cr>
+
+function! s:VSetSearch()
+  let temp = @s
+  normal! gv"sy
+  let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
+  let @s = temp
+endfunction
 
 " tags
 set tags=./.tags;,.tags
@@ -157,6 +166,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'kana/vim-textobj-user'
 Plug 'tomtom/tcomment_vim'
+Plug 'kana/vim-textobj-lastpat'
 
 call plug#end()
 
@@ -314,8 +324,8 @@ let g:fzf_colors = {
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " ag{{{
-" nnoremap <leader>ss :<c-u>Ag<space><c-r>=expand('<cword>')<cr><cr>
-" vnoremap <leader>ss y:Ag<space><c-r>=escape(@",'"*?()[]{}.')<cr><cr>
+nnoremap <leader>ss :<c-u>Ag<space><c-r>=expand('<cword>')<cr><cr>
+vnoremap <leader>ss y:Ag<space><c-r>=escape(@",'"*?()[]{}.')<cr><cr>
 
 " ale.vim
 " let g:ale_sign_column_always = 1
