@@ -66,6 +66,12 @@ function! s:SaveConfig()
   :!cp ~/.ctags.d/vue.ctags ~/Documents/projects/Dotfiles/ctags/
 endfunction
 
+" changes
+" jump 2 last change
+nnoremap g. `.
+" jump 2 last insert place
+nnoremap g^ `^
+
 " buffer {{{
 command! BufOnly execute '%bdelete|edit#|bdelete#'
 
@@ -74,7 +80,7 @@ if has("win32unix")
   nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
 endif
 
-nnoremap <c-l> :<c-u>nohls<cr><c-l>
+nnoremap <silent> <c-l> :<c-u>nohls<cr><c-l>
 nnoremap <leader>tn :<c-u>tabnew<cr>
 nnoremap <leader>tc :<c-u>tabclose<cr>
 nnoremap [t :<c-u>tabprevious<cr>
