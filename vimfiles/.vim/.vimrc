@@ -54,6 +54,22 @@ nnoremap <leader>w :w<cr>
 
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
 
+" replace
+" exe last :s cmd with same params again
+nnoremap & :&&<cr>
+xnoremap & :&&<cr>
+
+" quickfix
+" add all filenames of qf to args list
+command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+function! QuickfixFilenames()
+  let buffer_numbers = {}
+  for quickfix_item in getqflist()
+    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+  endfor
+  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+endfunction
+
 nnoremap <silent> <space>e :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
 nnoremap <silent> <space>t :vs ~/.ctags.d/vue.ctags<cr>
 nnoremap <silent> <space>w :<c-u>call <SID>SaveConfig()<cr>
