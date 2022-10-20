@@ -303,15 +303,22 @@ endfunction
 nnoremap <silent> <leader>s :<c-u>call FzfSearchCurrent(expand('<cword>'))<cr>
 vnoremap <silent> <leader>s y:<c-u>call FzfSearchCurrent(escape(@",'"*?()[]{}.'))<cr>
 
+function! s:show_in_loc_list(lines)
+  call setloclist(0, map(copy(a:lines), '{ "filename": v:val }'))
+  lopen
+  lclose
+endfunction
+
 " An action can be a reference to a function that processes selected lines
-function! s:build_quickfix_list(lines)
+function! s:show_in_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
   copen
   cc
 endfunction
 
 let g:fzf_action = {
-\ 'ctrl-q': function('s:build_quickfix_list'),
+\ 'ctrl-q': function('s:show_in_quickfix_list'),
+\ 'ctrl-l': function('s:show_in_loc_list'),
 \ 'ctrl-t': 'tab split',
 \ 'ctrl-x': 'split',
 \ 'ctrl-v': 'vsplit' }
