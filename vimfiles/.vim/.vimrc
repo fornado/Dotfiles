@@ -45,6 +45,8 @@ set smartcase
 set diffopt+=vertical
 
 " system paste board
+set clipboard=unnamed
+
 "inoremap <c-v> <c-r>+
 inoremap <c-l> <right>
 inoremap jk <esc>
