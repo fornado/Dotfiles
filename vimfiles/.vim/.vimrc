@@ -44,6 +44,8 @@ set ignorecase
 set smartcase
 set diffopt+=vertical
 
+set list lcs=tab:\¦\\u0020
+
 " system paste board
 set clipboard=unnamed
 
