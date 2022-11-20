@@ -2,6 +2,8 @@
 unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
+set rtp+=~/Documents/projects/Dotfiles/vimfiles/.vim/
+
 let g:iswindows = 0
 if(has("win32") || has("win64") || has("win95") || has("win16") || has("win32unix"))
   let g:iswindows = 1
@@ -30,7 +32,6 @@ set noswapfile
 set nowritebackup
 set noundofile
 set novisualbell
-set nocursorline
 set noerrorbells
 set vb t_vb=
 
@@ -45,7 +46,7 @@ set smartcase
 set diffopt+=vertical
 
 set list lcs=tab:\¦\\u0020
-
+set cursorline
 " system paste board
 set clipboard=unnamed
 

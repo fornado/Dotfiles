@@ -7,9 +7,9 @@
 ;Send {Home}
 ;return
 
-^e::
-Send {End}
-return
+;^e::
+;Send {End}
+;return
 
 ^b::
 Send {Left}
