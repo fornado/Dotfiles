@@ -9,20 +9,27 @@ setlocal scrolloff=2
 setlocal tabstop=2
 
 " tags
-let s:tag_prefix = '^\s\+\<'
-let s:tag_sufix = '\s\+{'
-let s:tag_method = 'methods:'
-let s:tag_computed = 'computed:'
-let s:tag_data = '\(\(data:\s\+function\s\?()\)\|\(data()\)\)'
+let s:tag_prefix = '^\(\s\{0}\|\s\{2}\|\s\{4}\)\zs'
+let s:tag_sufix = '\ze\s\{0,2}{\{0,1}'
+
+let s:tag_data = 'data()'
+
+let s:tag_end = '$%k$'
+let s:tags = {
+      \  'd': { 'name': 'data()', 'end': 'j$%k$' },
+      \  'm': { 'name': 'methods:', 'end': s:tag_end },
+      \  'c': { 'name': 'computed:', 'end': s:tag_end },
+      \  't': { 'name': 'created()', 'end': s:tag_end },
+      \  's': { 'name': '<script>', 'end': '}k$'}
+      \ }
 
 " pattern
 let s:func_patern = '^\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
 
 " buffer maps
-nnoremap <buffer> <leader>b :<c-u>call <SID>JumpBlocks(1)<cr>
-nnoremap <buffer> <leader>e :<c-u>call <SID>JumpBlocks(0)<cr>
-vnoremap <buffer> ap :<c-u>call <SID>AddProperty()<cr>
-
+nnoremap <buffer> <leader>b :<c-u>call <SID>Jump2Tag(1)<cr>
+nnoremap <buffer> <leader>e :<c-u>call <SID>Jump2Tag(0)<cr>
+" vnoremap <buffer> ap :<c-u>call <SID>AddProperty()<cr>
 
 " get text of selected
 function! s:GetVisualSelection()
@@ -34,33 +41,22 @@ function! s:GetVisualSelection()
   return join(lines, "\n")
 endfunction
 
-" map input char to tag name
-function! Mapper(char)
-	let l:char = a:char
-	if char == 'm'
-		return s:tag_method
-	elseif char == 'f'
-		return s:func_patern
-	elseif char == 'c'
-		return s:tag_computed
-	elseif char == 'd'
-		return s:tag_data
-	else
-		echo 'char ' . char . ' not support mapper'
-	endif
-endfunction
-
 " jump =====================================================
-function! s:JumpBlocks(start)
-	let char = nr2char(getchar())
-  let tag = Mapper(char)
-  if tag == s:func_patern
+function! s:Jump2Tag(start)
+  let char = getcharstr()
+  if !has_key(s:tags, char)
+    echomsg 'char ' . char . ' not supported'
+    return
+  endif
+  let taginfo = s:tags[char]
+  let tagname = taginfo['name']
+  let end = taginfo['end']
+  if tagname == s:func_patern
 		call <SID>LocateFunc(a:start)
   else
-		call <SID>LocateTag(tag, a:start)
+		call s:LocateTag(tagname, a:start, end)
   endif
 endfunction
-
 
 " add a method at the end of methods block
 function! s:AddProperty()
@@ -68,31 +64,43 @@ function! s:AddProperty()
 	let char = nr2char(getchar())
 	let start = char == 'i' ? 1 : 0
 
-	let tag = nr2char(getchar())
-	let tag = Mapper(tag)
+	let tagname = nr2char(getchar())
+	let tagname = Conver2TagName(tagname)
 
 	let cmd = (char == 'i' ? 'O' : 'o')
-	if tag == s:tag_data
+	if tagname == s:tag_data
 		let cmd = (char == 'i' ? 'o' : 'O')
 	endif
 
 	let suffix = ' {},'
-	if tag == s:tag_data
+	if tagname == s:tag_data
 		let suffix = ': '
 	endif
 
-	call <SID>LocateTag(tag, start)
+	call s:LocateTag(tagname, start, '')
 	execute 'normal! ' . cmd . mdsign . suffix
 	execute 'normal! h'
 endfunction
 
 
-function! s:LocateTag(tag, start)
-	" call search('\<' . a:tag, 'c')
-  call search(s:tag_prefix . a:tag . s:tag_sufix)
-	execute 'normal! ' . (a:start ? 'j^' : '$%kg_')
+function! s:LocateTag(tagname, start, endPoint)
+  let pattern = s:tag_prefix . a:tagname . s:tag_sufix
+  let flag = 'w'
+  if !a:start
+    let flag = 'bW'
+  endif
+  let save_cursor = getcurpos()
+  normal G$
+  let line = search(pattern, flag)
+  if line == 0
+			call setpos('.', save_cursor)
+      return
+  endif
+  if !a:start
+    exe 'normal ' . a:endPoint
+  endif
+  normal zz
 endfunction
-
 
 " function ==========================================
 " f: function obj

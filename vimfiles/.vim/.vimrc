@@ -54,6 +54,7 @@ set clipboard=unnamed
 inoremap <c-l> <right>
 inoremap jk <esc>
 
+nnoremap <space><space> :<c-u>source %<cr>
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :w<cr>
 
