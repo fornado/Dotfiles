@@ -102,6 +102,9 @@ function! s:LocateTag(tagname, start, endPoint)
   normal zz
 endfunction
 
+" fzf.vim
+command! -bang ProjectFiles call fzf#vim#files('~/Documents/projects/', <bang>0)
+
 " function ==========================================
 " f: function obj
 nnoremap daf :<c-u>call <SID>DeleteCurFunc()<cr>

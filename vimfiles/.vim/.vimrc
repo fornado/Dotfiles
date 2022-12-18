@@ -1,6 +1,6 @@
-
 unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
+packadd! matchit
 
 set rtp+=~/Documents/projects/Dotfiles/vimfiles/.vim/
 
@@ -47,6 +47,7 @@ set diffopt+=vertical
 
 set list lcs=tab:\¦\\u0020
 set cursorline
+
 " system paste board
 set clipboard=unnamed
 
@@ -60,11 +61,16 @@ nnoremap <leader>w :w<cr>
 
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
 
+" reindet
+" use gq operator prefix
+
 " replace
 " exe last :s cmd with same params again
 nnoremap & :&&<cr>
 xnoremap & :&&<cr>
 
+" autocmd
+" autocmd
 " quickfix
 " add all filenames of qf to args list
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
@@ -202,6 +208,10 @@ let g:airline_theme='onedark'
 " Nerdtree
 nnoremap yon :<c-u>NERDTreeToggle<cr>
 
+" paste
+nnoremap yop :<c-u>set paste!<cr>
+
+
 " onedark.vim
 if (empty($TMUX))
 	if (has("nvim"))
@@ -218,6 +228,7 @@ endif
 " command! -bang Tags call fzf#run(fzf#wrap({'source': TagsList(), 'sink': 'tabedit'}, <bang>0))
 " command! -bang Tags call fzf#run(fzf#wrap({'source': TagsList(), 'sink': SinkSingle()}, <bang>0))
 command! -bang Tags call fzf#run(fzf#wrap({'source': TagsList(), 'sink': function('SinkSingle')}, <bang>0))
+command! -bang -nargs=? Ag call fzf#run(fzf#wrap({'source': 'ls', 'sink*': function('s:show_in_loc_list'), 'options': '--multi'}, <bang>0))
 " command! -bang Tags call fzf#run(fzf#wrap({'source': 'ls'}, <bang>0))
 
 nnoremap <leader>ff :<c-u>Files<cr>
@@ -302,7 +313,12 @@ function! FzfSearchCurrent(str)
   let char = getcharstr()
   let cmd = FzfChar2Cmd(char)
   if cmd !=# '-1'
-	execute cmd . ' ' . a:str
+    let command = cmd . ' ' . a:str
+    echomsg command
+    command
+    " exe 'normal ' . command
+    " execute command
+	" execute cmd . ' ' . a:str
   endif
 endfunction
 
@@ -310,6 +326,8 @@ nnoremap <silent> <leader>s :<c-u>call FzfSearchCurrent(expand('<cword>'))<cr>
 vnoremap <silent> <leader>s y:<c-u>call FzfSearchCurrent(escape(@",'"*?()[]{}.'))<cr>
 
 function! s:show_in_loc_list(lines)
+  echomsg 'call show_in_loc_list...'
+  echomsg a:lines
   call setloclist(0, map(copy(a:lines), '{ "filename": v:val }'))
   lopen
   lclose
@@ -317,6 +335,7 @@ endfunction
 
 " An action can be a reference to a function that processes selected lines
 function! s:show_in_quickfix_list(lines)
+  echomsg a:lines
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
   copen
   cc

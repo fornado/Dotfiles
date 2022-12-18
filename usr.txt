@@ -1,0 +1,113 @@
+# usr.txt
+## usr_03.txt
+
+### quickref.cnx
+1. Q_ds
+use [N]X to del N chars backwards;
+2. Q_de
+use [N]gJ or v_gJ to concat next N line without blank
+3. Q_cm
+use ]p or [p to paste and adjust indent
+use gp or gP to place curdhsor at the end of new text
+use >p or <p to paste and add or minus a shiftwidth
+if (abc) {
+use [N]gJ or v_gJ v_gJ to concat next N line without blank
+}
+
+4. Q_ch
+use v_b_c to replace select chars of every line;
+use v_b_C to replace all other chars after cursor of every line;
+
+use ~ or gu or gU in normal mode to change case
+use [num]<c-a> or <c-x> to place and add or minus num at first n of cur line;
+
+e.x.g:
+the time isbg
+use ~ or gu or gU in normal mode to change case
+use [num]<c-a> or <c-x> to place and add or minus num at first n of cur line;
+the time isbg
+
+use ~ or gu or gU in normal mode to ch
+place and add or minus num at first n of cur line
+
+5. Q_co
+use & to repu last stitute cmd at cur line;
+
+6. Q_to 文本对象
+use [i|a]b to move to content of () of next block, while no need to jump to the line;
+use [i|a]B to move to content of {} of next block, while no need to jump to the line;
+
+function name(params) {
+	console.log("params")
+	console.log(<aa>)
+	console.log("params")aaa(aaa)
+}
+
+if (a === b) {
+	conos
+	aaaa
+	aaaa
+}
+
+## usr_04
+use X to delete left char of cursor;
+	To err is human. you need a computer.
+
+use dwwelp to move a word to a new place
+	Some less boring text to try out commands. ~
+let sqr = LongVariable * ~
+	This is ineresting
+
+## usr_05
+use map \p i(<Esc>ea)<Esc> to surround the cur word
+use map \c i{<Esc>ea}<Esc> to surround the cur word
+<p>aaa</p>
+
+use :options to see option
+
+## usr_07
+modify filename
+use :saveas {newfilename} to copy cur file to a new file named {newfilename};
+use :file {newfilename}
+
+## usr_08
+use {height}CTRL-W _ to set cur win to height line, without height to max height;
+use c-w_^ to split win to edit # file;
+use c-w [H|J|K|L] to move window to other position;
+
+use vim [-o|-O] file1 file2  or :[vertical] all to split or vsplit window to show files;
+add content
+
+use :vertical diffsplit {filename} to diff cur file and filename
+use ]c or [c to jump 2 next or previous difference
+use :diffupdate to force update diff info;;
+use :dp or do to put or get patch to or from other file;
+
+this is add file
+
+## usr_10
+use gqap to reindent cur paragraph by textwidth
+use guu or gUU or g~~ to change to lowercase of th line.
+
+type !{motion} in normal mode, then type {cmd} to filter in the range;
+type !!{cmd} to execute cmd at cur line.
+
+## usr_29
+use :ptag {tagname} to show tag in preview window;
+use :pclose to close preview window;
+use :pedit {filename} to edit file in preview window;
+use :psearch {word} to matched in preview window;
+
+use ]] to next outer start of {;
+use [[ to previous inner or outer start of {;
+use ][ to next inner or outer end of };
+use [] to previous outer end of };
+use % to next { or }, equal to [[ or ][
+
+use [( or ]) to move to other (;
+use [/ or ]/ to move to /*-*/ commentary;
+
+use gD to find first refer of cur word in cur file;
+use gd to find first refer of cur word in cur func;
+
+
