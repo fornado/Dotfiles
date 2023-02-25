@@ -55,14 +55,12 @@ set clipboard=unnamed
 inoremap <c-l> <right>
 inoremap jk <esc>
 
-nnoremap <space><space> :<c-u>source %<cr>
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :w<cr>
 
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
+nnoremap <silent> <c-l> :<c-u>nohls<cr><c-l>
 
-" reindet
-" use gq operator prefix
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
 
 " replace
 " exe last :s cmd with same params again
@@ -84,7 +82,7 @@ endfunction
 
 nnoremap <silent> <space>e :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
 nnoremap <silent> <space>t :vs ~/.ctags.d/vue.ctags<cr>
-nnoremap <silent> <space>w :<c-u>call <SID>SaveConfig()<cr>
+nnoremap <silent> <space><space> :<c-u>call <SID>SaveConfig()<cr>
 nnoremap <silent> <space>so :<c-u>so %<cr>
 nnoremap <silent> <space>sm :<c-u>so $MYVIMRC<cr>
 
@@ -108,13 +106,39 @@ if has("win32unix")
   nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
 endif
 
-nnoremap <silent> <c-l> :<c-u>nohls<cr><c-l>
-nnoremap <leader>tn :<c-u>tabnew<cr>
-nnoremap <leader>tc :<c-u>tabclose<cr>
+" tab
+nnoremap <space>tn :<c-u>tabnew<cr>
+nnoremap <space>tc :<c-u>tabclose<cr>
 nnoremap [t :<c-u>tabprevious<cr>
 nnoremap ]t :<c-u>tabnext<cr>
 
-nnoremap <leader>cc :<c-u>cclose<cr>
+" window
+" move cursor around
+nnoremap <space>wj <c-w>j
+nnoremap <space>wk <c-w>k
+nnoremap <space>wh <c-w>h
+nnoremap <space>wl <c-w>l
+nnoremap <space>wt <c-w>t
+nnoremap <space>wb <c-w>b
+nnoremap <space>wp <c-w>p
+" maxium or minium
+nnoremap <space>w- <c-w>_
+nnoremap <space>wm <c-w>=
+nnoremap <space>w] <c-w>\|
+" open only
+nnoremap <space>wo <c-w>o
+" retote
+nnoremap <space>wr <c-w>r
+nnoremap <space>wR <c-w>R
+nnoremap <space>wx <c-w>x
+" move window
+nnoremap <space>wJ <c-w>J
+nnoremap <space>wK <c-w>K
+nnoremap <space>wH <c-w>H
+nnoremap <space>wL <c-w>L
+
+" quickfix
+nnoremap <space>cc :<c-u>cclose<cr>
 
 " select last paste in visual mode
 nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
@@ -130,41 +154,6 @@ endfunction
 
 " tags
 set tags=./.tags;,.tags
-
-" " auto-pairs
-" inoremap ' ''<esc>i
-" inoremap " ""<esc>i
-
-" inoremap ( ()<esc>i
-" inoremap ) <c-r>=ClosePair(')')<cr>
-
-" inoremap { {<cr>}<esc>O
-" " inoremap { {}<esc>i
-" " inoremap } <c-r>=ClosePair('}')<cr>
-
-" inoremap [ []<esc>i
-" inoremap ] <c-r>=ClosePair(']')<cr>
-
-" inoremap < <><esc>i
-" inoremap > <c-r>=ClosePair('>')<cr>
-
-" function! ClosePair(char)
-"   if getline('.')[col('.') - 1] == a:char
-"     return "\<right>"
-"   else
-"     return a:char
-"   endif
-" endfunction
-
-" function! SkipPair()
-"   if getline('.')[col('.') - 1] == '<' || getline('.')[col('.') - 1] == ')' || getline('.')[col('.') - 1] == ']' || getline('.')[col('.') -1] == '"' || getline('.')[col('.') - 1] == "'" || getline('.')[col('.') - 1] == '}'
-"     return "\<esc>la"
-"   else
-"     return "\t"
-"   endif
-" endfunction
-
-" inoremap <tab> <c-r>=SkipPair()<cr>
 
 " Plugins
 call plug#begin('~/.vim/plugged')
@@ -211,7 +200,6 @@ nnoremap yon :<c-u>NERDTreeToggle<cr>
 " paste
 nnoremap yop :<c-u>set paste!<cr>
 
-
 " onedark.vim
 if (empty($TMUX))
 	if (has("nvim"))
@@ -222,14 +210,9 @@ if (empty($TMUX))
 	endif
 endif
 
-" fzf.vim {{{
-" command! -bang Files call fzf#run(fzf#wrap({'source': 'ls'}, <bang>0))
-" command! -bang Tags call fzf#run(fzf#wrap({'source': ['c|1','m|2','f|3','c|4']}, <bang>0))
-" command! -bang Tags call fzf#run(fzf#wrap({'source': TagsList(), 'sink': 'tabedit'}, <bang>0))
-" command! -bang Tags call fzf#run(fzf#wrap({'source': TagsList(), 'sink': SinkSingle()}, <bang>0))
+" fzf.vim
 command! -bang Tags call fzf#run(fzf#wrap({'source': TagsList(), 'sink': function('SinkSingle')}, <bang>0))
 command! -bang -nargs=? Ag call fzf#run(fzf#wrap({'source': 'ls', 'sink*': function('s:show_in_loc_list'), 'options': '--multi'}, <bang>0))
-" command! -bang Tags call fzf#run(fzf#wrap({'source': 'ls'}, <bang>0))
 
 nnoremap <leader>ff :<c-u>Files<cr>
 nnoremap <leader>fgf :<c-u>GFiles<cr>
@@ -249,17 +232,10 @@ function! TagsList()
     if match(line, '^!_TAG') != -1 | continue | endif
     let arr = matchlist(line, '\v^(\w+)\t([a-zA-Z/0-9.@]+)\t.*;"\t(\w)\t?([a-zA-Z:0-9]{0,})')
     if !empty(arr)
-      " echomsg 'arr:'
-      " echomsg arr
       let name = get(arr, 1, '')
       let src = get(arr, 2, '')
       let kind = get(arr, 3, '')
-      " echomsg 'name: ' . name
-      " echomsg 'src: ' . src
-      " echomsg 'kind: ' . kind
-	" let kind = get(extend, 0, '')
       let line = kind . '|' . name . ' ' . src
-        " let kind = substitute(line, '\v.*;"\t(\w+)(\t.*)?', '\1', '')
       call add(list, line)
     endif
   endfor
@@ -316,9 +292,6 @@ function! FzfSearchCurrent(str)
     let command = cmd . ' ' . a:str
     echomsg command
     command
-    " exe 'normal ' . command
-    " execute command
-	" execute cmd . ' ' . a:str
   endif
 endfunction
 
@@ -414,17 +387,6 @@ au BufNewFile,BufRead *.html,*.javascript,*.vue set autoindent
 " au BufNewFile,BufRead *.html,*.javascript,*.vue set fileformat=dos
 au FileType vue syntax sync fromstart
 
-" emmet-vim
-" usage in html
-" trigger: <c-y>,
-" {element}.classname#id{trigger}
-" {element}>{subelement}{content}*count
-" {element}+{element}
-"
-" in css
-" w300px+h300px+bgc{trigger}
-" lw{trigger} for line-height
-
 " gutentags
 " 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
 " let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
@@ -446,23 +408,6 @@ let g:gutentags_ctags_tagfile = '.tags'
 " if !isdirectory(s:vim_tags)
 "    silent! call mkdir(s:vim_tags, 'p')
 " endif
-
-
-" vim-unimpaired'
-" use [o to open a option, e.g. [ob to open 'background' option, b is
-" 'background'
-" use ]o to close a option, e.g. ]ob to close 'background' option
-
-"
-" use [ or ] to move backwards or forwards in normal mode
-" use {[|]}{a|b|l|q|t} to revious or next obj, the uppercase to first/last
-" one;
-" use [f
-"
-" use {>|<|=|[|]}{p|P} to incre/decre/equal indent after paste at under or up line
-" use {[|]}{p|P} to preserve matching indent behavior after paste at under or up line
-"
-" use
 
 colorscheme oneDark
 silent! helptags ALL
