@@ -109,6 +109,9 @@ endif
 " tab
 nnoremap <space>tn :<c-u>tabnew<cr>
 nnoremap <space>tc :<c-u>tabclose<cr>
+nnoremap <space>to :<c-u>tabonly<cr>
+nnoremap <space>tf :<c-u>tabfirst<cr>
+nnoremap <space>tl :<c-u>tablast<cr>
 nnoremap [t :<c-u>tabprevious<cr>
 nnoremap ]t :<c-u>tabnext<cr>
 
