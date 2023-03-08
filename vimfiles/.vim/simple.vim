@@ -5,58 +5,164 @@ packadd! matchit
 set rtp+=~/.vim/plugged/vimcdoc/
 
 " Basic {{{1
-" leader {{{2
 let mapleader = ","
 
 " options {{{2
-setlocal foldmethod=marker
-
-set helplang=cn
-
-set textwidth=80
+set number
+set relativenumber
+set hidden
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+set smartindent
+set autoindent
+set scrolloff=0
 
-set number
-set relativenumber
 set hlsearch
 set incsearch
 set ignorecase
 set smartcase
-set hidden
+set splitbelow
+set splitright
+
+set cmdheight=1
+set autoread
+set cursorline
+set helplang=cn
+set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,utf-16,big5,euc-jp,latin1
+
+set noexpandtab
+set nobackup
+set noswapfile
+set nowritebackup
+set noundofile
+set novisualbell
+set noerrorbells
+set vb t_vb=
+
+set diffopt+=vertical
+set list lcs=tab:\¦\\u0020
+set clipboard=unnamed
+
+setlocal foldmethod=marker
 
 " comments
 set formatoptions+=ro
 "set comments=://
 
 " mappings {{{2
+" basic {{{3
+inoremap jk <esc>
 nnoremap <leader>w :<c-u>update %<cr>
 nnoremap <leader>q :<c-u>quit<cr>
-
-nnoremap <space>e :<c-u>vs ~/Documents/projects/Dotfiles/vimfiles/.vim/simple.vim<cr>
-nnoremap <space>w :<c-u>update <Bar> source %<cr>
-
 nnoremap <silent> <c-l> :<c-u>nohls<cr><c-l>
+
+inoremap <c-l> <right>
+
+nnoremap <silent> <space>so :<c-u>so %<cr>
+"nnoremap <silent> <space>sm :<c-u>so $MYVIMRC<cr>
+nnoremap <space>e :<c-u>vs ~/Documents/Dotfiles/vimfiles/.vim/simple.vim<cr>
+
+nnoremap g. `.
+nnoremap g^ `^
+
+nnoremap <space>i migg=G`i
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
+if has("win32unix")
+	nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
+endif
+
 cnoremap <c-l> <right>
 cnoremap <c-h> <bs>
-nnoremap <space>i gg=G
 
-"inoremap jk <esc>
+command! BufOnly execute '%bdelete|edit#|bdelete#'
 
-" add blank
-"nnoremap ]<space> o<esc>k
+" exe last :s cmd with same params again
+nnoremap & :&&<cr>
+xnoremap & :&&<cr>
+
+"nnoremap g* *N
+
+" common {{{3
+" window
+" move around
+nnoremap <space>wj <c-w>j
+nnoremap <space>wk <c-w>k
+nnoremap <space>wh <c-w>h
+nnoremap <space>wl <c-w>l
+nnoremap <space>wt <c-w>t
+nnoremap <space>wb <c-w>b
+nnoremap <space>wp <c-w>p
+" maxium or minium
+nnoremap <space>w- <c-w>_
+nnoremap <space>wm <c-w>=
+nnoremap <space>w] <c-w>\|
+" open only
+nnoremap <space>wo <c-w>o
+" retote
+nnoremap <space>wr <c-w>r
+nnoremap <space>wR <c-w>R
+nnoremap <space>wx <c-w>x
+" display
+nnoremap <space>wJ <c-w>J
+nnoremap <space>wK <c-w>K
+nnoremap <space>wH <c-w>H
+nnoremap <space>wL <c-w>L
+"nnoremap <space>pq :<c-u>pclose<cr>
+
+" tab
+nnoremap <space>tn :<c-u>tabnew<cr>
+nnoremap <space>tc :<c-u>tabclose<cr>
+nnoremap <space>to :<c-u>tabonly<cr>
+nnoremap <space>tf :<c-u>tabfirst<cr>
+nnoremap <space>tl :<c-u>tablast<cr>
+nnoremap [t :<c-u>tabprevious<cr>
+nnoremap ]t :<c-u>tabnext<cr>
+
+nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+" line
+nnoremap <space>ll <c-d>
+nnoremap <space>lh <c-u>
+
 nnoremap [<space> O<esc>j
+nnoremap [<space>d kdd
+nnoremap ]<space> o<esc>k
+nnoremap ]<space>d jddk
 
-" text-obj
-" onoremap <f7> a{
-"
-"
+" functionality {{{3
+" select last paste in visual mode
+xnoremap * :<c-u>call <SID>VSetSearch()<cr>/<c-r>=@/<cr><cr>
+xnoremap # :<c-u>call <SID>VSetSearch()<cr>?<c-r>=@/<cr><cr>
+
+function! s:VSetSearch()
+	let temp = @s
+	normal! gv"sy
+	let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
+	let @s = temp
+endfunction
+
 " toggle
-" prefix by yo in normal mode
-"
-" close preview window
-nnoremap <space>pq :<c-u>pclose<cr>
+nnoremap yot :<c-u>terminal<cr>
+tnoremap yot <c-w>q
+nnoremap yop :<c-u>set paste!<cr>
+
+" Netrw
+nnoremap yon :<c-u>Lexplore .<cr>
+
+" quickfix
+nnoremap yoq :<c-u>cwindow<cr>
+nnoremap <space>cc :<c-u>cclose<cr>
+
+" add all filenames of qf to args list
+command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+function! QuickfixFilenames()
+  let buffer_numbers = {}
+  for quickfix_item in getqflist()
+    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+  endfor
+  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+endfunction
 
 " autocmd {{{2
 ":autocmd [group] {events} {file-pattern} [++nested] {command}
