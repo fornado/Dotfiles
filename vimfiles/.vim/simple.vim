@@ -2,7 +2,10 @@ unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 packadd! matchit
 
-set rtp+=~/.vim/plugged/vimcdoc/
+let $MYRTPPath = $HOME . '/Documents/Dotfiles/vimfiles/.vim/pack/vendor/start'
+let $FUGITVIE = $MYRTPPath . '/vim-fugitive'
+let $VIMCDOC = $MYRTPPath . '/vimcdoc-master'
+set runtimepath=$FUGITVIE,$VIMCDOC,$VIMRUNTIME
 
 " Basic {{{1
 let mapleader = ","
@@ -22,15 +25,16 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+
 set splitbelow
 set splitright
 
 set cmdheight=1
-set autoread
 set cursorline
 set helplang=cn
 set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,utf-16,big5,euc-jp,latin1
 
+set autoread
 set noexpandtab
 set nobackup
 set noswapfile
@@ -108,6 +112,7 @@ nnoremap <space>wJ <c-w>J
 nnoremap <space>wK <c-w>K
 nnoremap <space>wH <c-w>H
 nnoremap <space>wL <c-w>L
+nnoremap <space>wT <c-w>T
 "nnoremap <space>pq :<c-u>pclose<cr>
 
 " tab
@@ -146,6 +151,7 @@ endfunction
 nnoremap yot :<c-u>terminal<cr>
 tnoremap yot <c-w>q
 nnoremap yop :<c-u>set paste!<cr>
+nnoremap yog :<c-u>Git<cr>
 
 " Netrw
 nnoremap yon :<c-u>Lexplore .<cr>
