@@ -4,8 +4,10 @@ packadd! matchit
 
 let $MYRTPPath = $HOME . '/Documents/Dotfiles/vimfiles/.vim/pack/vendor/start'
 let $FUGITVIE = $MYRTPPath . '/vim-fugitive'
-let $VIMCDOC = $MYRTPPath . '/vimcdoc-master'
-set runtimepath=$FUGITVIE,$VIMCDOC,$VIMRUNTIME
+let $VIMCDOC = $MYRTPPath . '/vimcdoc'
+let $FZFVIM = $MYRTPPath . '/fzf.vim'
+let $FZF = $MYRTPPath . '/fzf'
+set runtimepath=$FUGITVIE,$VIMCDOC,$FZFVIM,$FZF,$VIMRUNTIME
 
 " Basic {{{1
 let mapleader = ","
