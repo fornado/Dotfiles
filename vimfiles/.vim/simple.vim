@@ -99,6 +99,13 @@ nnoremap <space>wl <c-w>l
 nnoremap <space>wt <c-w>t
 nnoremap <space>wb <c-w>b
 nnoremap <space>wp <c-w>p
+tnoremap <space>wj <c-w>j
+tnoremap <space>wk <c-w>k
+tnoremap <space>wh <c-w>h
+tnoremap <space>wl <c-w>l
+tnoremap <space>wt <c-w>t
+tnoremap <space>wb <c-w>b
+tnoremap <space>wp <c-w>p
 " maxium or minium
 nnoremap <space>w- <c-w>_
 nnoremap <space>wm <c-w>=
@@ -110,6 +117,8 @@ nnoremap <space>wr <c-w>r
 nnoremap <space>wR <c-w>R
 nnoremap <space>wx <c-w>x
 " display
+nnoremap <space>wv <c-w>v
+nnoremap <space>ws <c-w>s
 nnoremap <space>wJ <c-w>J
 nnoremap <space>wK <c-w>K
 nnoremap <space>wH <c-w>H
@@ -127,6 +136,9 @@ nnoremap [t :<c-u>tabprevious<cr>
 nnoremap ]t :<c-u>tabnext<cr>
 
 nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+" dir
+nnoremap <space>d :<c-u>pwd<cr>
 
 " line
 nnoremap <space>ll <c-d>
