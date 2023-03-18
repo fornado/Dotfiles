@@ -92,6 +92,10 @@ command! BufOnly execute '%bdelete|edit#|bdelete#'
 nnoremap & :&&<cr>
 xnoremap & :&&<cr>
 
+" Custom {{{1
+" select last paste in visual mode
+nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+
 " common {{{3
 " window
 " move around
@@ -143,7 +147,9 @@ nnoremap <space>tl :<c-u>tablast<cr>
 nnoremap [t :<c-u>tabprevious<cr>
 nnoremap ]t :<c-u>tabnext<cr>
 
-nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+" buffer
+nnoremap ]b :<c-u>bnext<cr>
+nnoremap [b :<c-u>bprevious<cr>
 
 " dir
 nnoremap <space>d :<c-u>pwd<cr>
@@ -176,7 +182,7 @@ nnoremap yop :<c-u>set paste!<cr>
 nnoremap yog :<c-u>Git<cr>
 
 " Netrw
-nnoremap yon :<c-u>Lexplore .<cr>
+nnoremap yon :<c-u>20Lexplore .<cr>
 
 " quickfix
 nnoremap yoq :<c-u>cwindow<cr>
@@ -198,14 +204,6 @@ endfunction
 ":  autocmd!
 ":  autocmd BufWritePre *  call DateInsert()
 ":augroup END
-
-" Custom {{{1
-" select last paste in visual mode
-nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-" buffer
-nnoremap ]b :<c-u>bnext<cr>
-nnoremap [b :<c-u>bprevious<cr>
 
 " show tag define 
 "au! CursorHold *.[ch] ++nested call PreviewWord()
