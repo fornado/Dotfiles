@@ -2,11 +2,11 @@ unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 packadd! matchit
 
-let $MYRTPPath = $HOME . '/Documents/Dotfiles/vimfiles/.vim/pack/vendor/start'
-let $FUGITVIE = $MYRTPPath . '/vim-fugitive'
-let $VIMCDOC = $MYRTPPath . '/vimcdoc'
-let $FZFVIM = $MYRTPPath . '/fzf.vim'
-let $FZF = $MYRTPPath . '/fzf'
+let $VENDOR_PATH = $HOME . '/Documents/Dotfiles/vimfiles/.vim/pack/vendor/start'
+let $FUGITVIE = $VENDOR_PATH . '/vim-fugitive'
+let $VIMCDOC = $VENDOR_PATH . '/vimcdoc'
+let $FZFVIM = $VENDOR_PATH . '/fzf.vim'
+let $FZF = $VENDOR_PATH . '/fzf'
 set runtimepath=$FUGITVIE,$VIMCDOC,$FZFVIM,$FZF,$VIMRUNTIME
 
 " Basic {{{1
@@ -92,6 +92,10 @@ command! BufOnly execute '%bdelete|edit#|bdelete#'
 nnoremap & :&&<cr>
 xnoremap & :&&<cr>
 
+" Custom {{{1
+" select last paste in visual mode
+nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+
 " common {{{3
 " window
 " move around
@@ -103,16 +107,16 @@ nnoremap <space>wt <c-w>t
 nnoremap <space>wb <c-w>b
 nnoremap <space>wp <c-w>p
 " terminal
-tnoremap <space>wj <c-w>j
-tnoremap <space>wk <c-w>k
-tnoremap <space>wh <c-w>h
-tnoremap <space>wl <c-w>l
-tnoremap <space>wt <c-w>t
-tnoremap <space>wb <c-w>b
-tnoremap <space>wp <c-w>p
-tnoremap <space>w- <c-w>_
-tnoremap <space>wm <c-w>=
-tnoremap <space>w] <c-w>\|
+"tnoremap <space>wj <c-w>j
+"tnoremap <space>wk <c-w>k
+"tnoremap <space>wh <c-w>h
+"tnoremap <space>wl <c-w>l
+"tnoremap <space>wt <c-w>t
+"tnoremap <space>wb <c-w>b
+"tnoremap <space>wp <c-w>p
+"tnoremap <space>w- <c-w>_
+"tnoremap <space>wm <c-w>=
+"tnoremap <space>w] <c-w>\|
 
 " maxium or minium
 nnoremap <space>w- <c-w>_
@@ -143,7 +147,9 @@ nnoremap <space>tl :<c-u>tablast<cr>
 nnoremap [t :<c-u>tabprevious<cr>
 nnoremap ]t :<c-u>tabnext<cr>
 
-nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+" buffer
+nnoremap ]b :<c-u>bnext<cr>
+nnoremap [b :<c-u>bprevious<cr>
 
 " dir
 nnoremap <space>d :<c-u>pwd<cr>
@@ -172,14 +178,20 @@ endfunction
 " toggle
 nnoremap yot :<c-u>terminal<cr>
 tnoremap yot <c-w>:q!<cr>
+
 nnoremap yop :<c-u>set paste!<cr>
 nnoremap yog :<c-u>Git<cr>
+nnoremap yoq :<c-u>cwindow<cr>
 
 " Netrw
-nnoremap yon :<c-u>Lexplore .<cr>
+let g:netrw_usetab = 1
+let g:netrw_winsize = -50
+nnoremap yon <Plug>NetrwShrink
+
+let g:netrw_liststyle =3
+let g:netrw_list_hide= netrw_gitignore#Hide() .. '.*\.swp$'
 
 " quickfix
-nnoremap yoq :<c-u>cwindow<cr>
 nnoremap <space>cc :<c-u>cclose<cr>
 
 " add all filenames of qf to args list
@@ -198,14 +210,6 @@ endfunction
 ":  autocmd!
 ":  autocmd BufWritePre *  call DateInsert()
 ":augroup END
-
-" Custom {{{1
-" select last paste in visual mode
-nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-" buffer
-nnoremap ]b :<c-u>bnext<cr>
-nnoremap [b :<c-u>bprevious<cr>
 
 " show tag define 
 "au! CursorHold *.[ch] ++nested call PreviewWord()
