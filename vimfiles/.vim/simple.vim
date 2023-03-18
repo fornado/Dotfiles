@@ -58,19 +58,27 @@ set formatoptions+=ro
 
 " mappings {{{2
 " basic {{{3
-inoremap jk <esc>
 nnoremap <leader>w :<c-u>update %<cr>
 nnoremap <leader>q :<c-u>quit<cr>
 nnoremap <silent> <c-l> :<c-u>nohls<cr><c-l>
 
+inoremap jk <esc>
 inoremap <c-l> <right>
 
+cnoremap <c-l> <right>
+cnoremap <c-h> <bs>
+
+nnoremap <silent> <space><space> :<c-u>wa<cr>
 nnoremap <silent> <space>so :<c-u>so %<cr>
-"nnoremap <silent> <space>sm :<c-u>so $MYVIMRC<cr>
 nnoremap <space>e :<c-u>vs ~/Documents/Dotfiles/vimfiles/.vim/simple.vim<cr>
 
+" back the last modify postion
 nnoremap g. `.
+" back the last quit insert mode
 nnoremap g^ `^
+" keep cursor and hl all matched
+nnoremap g* *N
+vnoremap g* *N 
 
 nnoremap <space>i migg=G`i
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
@@ -78,16 +86,11 @@ if has("win32unix")
 	nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
 endif
 
-cnoremap <c-l> <right>
-cnoremap <c-h> <bs>
-
 command! BufOnly execute '%bdelete|edit#|bdelete#'
 
 " exe last :s cmd with same params again
 nnoremap & :&&<cr>
 xnoremap & :&&<cr>
-
-"nnoremap g* *N
 
 " common {{{3
 " window
@@ -99,6 +102,7 @@ nnoremap <space>wl <c-w>l
 nnoremap <space>wt <c-w>t
 nnoremap <space>wb <c-w>b
 nnoremap <space>wp <c-w>p
+" terminal
 tnoremap <space>wj <c-w>j
 tnoremap <space>wk <c-w>k
 tnoremap <space>wh <c-w>h
@@ -106,6 +110,10 @@ tnoremap <space>wl <c-w>l
 tnoremap <space>wt <c-w>t
 tnoremap <space>wb <c-w>b
 tnoremap <space>wp <c-w>p
+tnoremap <space>w- <c-w>_
+tnoremap <space>wm <c-w>=
+tnoremap <space>w] <c-w>\|
+
 " maxium or minium
 nnoremap <space>w- <c-w>_
 nnoremap <space>wm <c-w>=
@@ -141,8 +149,8 @@ nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
 nnoremap <space>d :<c-u>pwd<cr>
 
 " line
-nnoremap <space>ll <c-d>
-nnoremap <space>lh <c-u>
+"nnoremap <space>ll <c-d>
+"nnoremap <space>lh <c-u>
 
 nnoremap [<space> O<esc>j
 nnoremap [<space>d kdd
@@ -163,7 +171,7 @@ endfunction
 
 " toggle
 nnoremap yot :<c-u>terminal<cr>
-tnoremap yot <c-w>q
+tnoremap yot <c-w>:q!<cr>
 nnoremap yop :<c-u>set paste!<cr>
 nnoremap yog :<c-u>Git<cr>
 
