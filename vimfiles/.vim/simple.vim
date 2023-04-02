@@ -188,8 +188,8 @@ let g:netrw_usetab = 1
 let g:netrw_winsize = -50
 nnoremap yon <Plug>NetrwShrink
 
-let g:netrw_liststyle =3
-let g:netrw_list_hide= netrw_gitignore#Hide() .. '.*\.swp$'
+let g:netrw_liststyle = 3
+let g:netrw_list_hide = netrw_gitignore#Hide() .. '.*\.swp$'
 
 " quickfix
 nnoremap <space>cc :<c-u>cclose<cr>
