@@ -3,13 +3,13 @@
 ;https://blog.csdn.net/u013332124/article/details/80680038
 
 ;;;;;;;;;;Control mappings
-;^a::
-;Send {Home}
-;return
+^a::
+Send {Home}
+return
 
-;^e::
-;Send {End}
-;return
+^e::
+Send {End}
+return
 
 ^b::
 Send {Left}

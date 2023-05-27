@@ -124,6 +124,8 @@ nnoremap <space>wl <c-w>l
 nnoremap <space>wt <c-w>t
 nnoremap <space>wb <c-w>b
 nnoremap <space>wp <c-w>p
+nnoremap <space>ws <c-w>s
+nnoremap <space>wv <c-w>v
 " maxium or minium
 nnoremap <space>w- <c-w>_
 nnoremap <space>wm <c-w>=
@@ -211,6 +213,10 @@ if (empty($TMUX))
 	if (has("termguicolors"))
 		set termguicolors
 	endif
+endif
+
+if has("gui_running")
+  set guifont=Monospace\ 14
 endif
 
 " fzf.vim
