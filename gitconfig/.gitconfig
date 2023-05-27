@@ -1,8 +1,8 @@
 [user]
-	name = libin
-	email = tony581@163.com
+	name = neo
+	email = neo@163.com
 [core]
-	excludesfile = /Users/lb/.gitignore_global
+	excludesfile = /home/neo/.gitignore_global
 [alias]
 	co = checkout
 	br = branch

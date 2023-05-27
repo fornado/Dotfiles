@@ -2,61 +2,207 @@ unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 packadd! matchit
 
-set rtp+=~/.vim/plugged/vimcdoc/
+let $VENDOR_PATH = $HOME . '/Documents/Dotfiles/vimfiles/.vim/pack/vendor/start'
+let $FUGITVIE = $VENDOR_PATH . '/vim-fugitive'
+let $VIMCDOC = $VENDOR_PATH . '/vimcdoc'
+let $FZFVIM = $VENDOR_PATH . '/fzf.vim'
+let $FZF = $VENDOR_PATH . '/fzf'
+set runtimepath=$FUGITVIE,$VIMCDOC,$FZFVIM,$FZF,$VIMRUNTIME
 
 " Basic {{{1
-" leader {{{2
 let mapleader = ","
 
 " options {{{2
-setlocal foldmethod=marker
-
-set helplang=cn
-
-set textwidth=80
+set number
+set relativenumber
+set hidden
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+set smartindent
+set autoindent
+set scrolloff=0
 
-set number
-set relativenumber
 set hlsearch
 set incsearch
 set ignorecase
 set smartcase
-set hidden
+
+set splitbelow
+set splitright
+
+set cmdheight=1
+set cursorline
+set helplang=cn
+set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,utf-16,big5,euc-jp,latin1
+
+set autoread
+set noexpandtab
+set nobackup
+set noswapfile
+set nowritebackup
+set noundofile
+set novisualbell
+set noerrorbells
+set vb t_vb=
+
+set diffopt+=vertical
+set list lcs=tab:\¦\\u0020
+set clipboard=unnamed
+
+setlocal foldmethod=marker
 
 " comments
 set formatoptions+=ro
 "set comments=://
 
 " mappings {{{2
+" basic {{{3
 nnoremap <leader>w :<c-u>update %<cr>
 nnoremap <leader>q :<c-u>quit<cr>
-
-nnoremap <space>e :<c-u>vs ~/Documents/projects/Dotfiles/vimfiles/.vim/simple.vim<cr>
-nnoremap <space>w :<c-u>update <Bar> source %<cr>
-
 nnoremap <silent> <c-l> :<c-u>nohls<cr><c-l>
+
+inoremap jk <esc>
+inoremap <c-l> <right>
+
 cnoremap <c-l> <right>
 cnoremap <c-h> <bs>
-nnoremap <space>i gg=G
 
-"inoremap jk <esc>
+nnoremap <silent> <space><space> :<c-u>wa<cr>
+nnoremap <silent> <space>so :<c-u>so %<cr>
+nnoremap <space>e :<c-u>vs ~/Documents/Dotfiles/vimfiles/.vim/simple.vim<cr>
 
-" add blank
-"nnoremap ]<space> o<esc>k
+" back the last modify postion
+nnoremap g. `.
+" back the last quit insert mode
+nnoremap g^ `^
+" keep cursor and hl all matched
+nnoremap g* *N
+vnoremap g* *N 
+
+nnoremap <space>i migg=G`i
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
+if has("win32unix")
+	nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
+endif
+
+command! BufOnly execute '%bdelete|edit#|bdelete#'
+
+" exe last :s cmd with same params again
+nnoremap & :&&<cr>
+xnoremap & :&&<cr>
+
+" Custom {{{1
+" select last paste in visual mode
+nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+" common {{{3
+" window
+" move around
+nnoremap <space>wj <c-w>j
+nnoremap <space>wk <c-w>k
+nnoremap <space>wh <c-w>h
+nnoremap <space>wl <c-w>l
+nnoremap <space>wt <c-w>t
+nnoremap <space>wb <c-w>b
+nnoremap <space>wp <c-w>p
+" terminal
+"tnoremap <space>wj <c-w>j
+"tnoremap <space>wk <c-w>k
+"tnoremap <space>wh <c-w>h
+"tnoremap <space>wl <c-w>l
+"tnoremap <space>wt <c-w>t
+"tnoremap <space>wb <c-w>b
+"tnoremap <space>wp <c-w>p
+"tnoremap <space>w- <c-w>_
+"tnoremap <space>wm <c-w>=
+"tnoremap <space>w] <c-w>\|
+
+" maxium or minium
+nnoremap <space>w- <c-w>_
+nnoremap <space>wm <c-w>=
+nnoremap <space>w] <c-w>\|
+" open only
+nnoremap <space>wo <c-w>o
+" retote
+nnoremap <space>wr <c-w>r
+nnoremap <space>wR <c-w>R
+nnoremap <space>wx <c-w>x
+" display
+nnoremap <space>wv <c-w>v
+nnoremap <space>ws <c-w>s
+nnoremap <space>wJ <c-w>J
+nnoremap <space>wK <c-w>K
+nnoremap <space>wH <c-w>H
+nnoremap <space>wL <c-w>L
+nnoremap <space>wT <c-w>T
+"nnoremap <space>pq :<c-u>pclose<cr>
+
+" tab
+nnoremap <space>tn :<c-u>tabnew<cr>
+nnoremap <space>tc :<c-u>tabclose<cr>
+nnoremap <space>to :<c-u>tabonly<cr>
+nnoremap <space>tf :<c-u>tabfirst<cr>
+nnoremap <space>tl :<c-u>tablast<cr>
+nnoremap [t :<c-u>tabprevious<cr>
+nnoremap ]t :<c-u>tabnext<cr>
+
+" buffer
+nnoremap ]b :<c-u>bnext<cr>
+nnoremap [b :<c-u>bprevious<cr>
+
+" dir
+nnoremap <space>d :<c-u>pwd<cr>
+
+" line
+"nnoremap <space>ll <c-d>
+"nnoremap <space>lh <c-u>
+
 nnoremap [<space> O<esc>j
+nnoremap [<space>d kdd
+nnoremap ]<space> o<esc>k
+nnoremap ]<space>d jddk
 
-" text-obj
-" onoremap <f7> a{
-"
-"
+" functionality {{{3
+" select last paste in visual mode
+xnoremap * :<c-u>call <SID>VSetSearch()<cr>/<c-r>=@/<cr><cr>
+xnoremap # :<c-u>call <SID>VSetSearch()<cr>?<c-r>=@/<cr><cr>
+
+function! s:VSetSearch()
+	let temp = @s
+	normal! gv"sy
+	let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
+	let @s = temp
+endfunction
+
 " toggle
-" prefix by yo in normal mode
-"
-" close preview window
-nnoremap <space>pq :<c-u>pclose<cr>
+nnoremap yot :<c-u>terminal<cr>
+tnoremap yot <c-w>:q!<cr>
+
+nnoremap yop :<c-u>set paste!<cr>
+nnoremap yog :<c-u>Git<cr>
+nnoremap yoq :<c-u>cwindow<cr>
+
+" Netrw
+let g:netrw_usetab = 1
+let g:netrw_winsize = -50
+nnoremap yon <Plug>NetrwShrink
+
+let g:netrw_liststyle = 3
+let g:netrw_list_hide = netrw_gitignore#Hide() .. '.*\.swp$'
+
+" quickfix
+nnoremap <space>cc :<c-u>cclose<cr>
+
+" add all filenames of qf to args list
+command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+function! QuickfixFilenames()
+  let buffer_numbers = {}
+  for quickfix_item in getqflist()
+    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+  endfor
+  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+endfunction
 
 " autocmd {{{2
 ":autocmd [group] {events} {file-pattern} [++nested] {command}
@@ -64,14 +210,6 @@ nnoremap <space>pq :<c-u>pclose<cr>
 ":  autocmd!
 ":  autocmd BufWritePre *  call DateInsert()
 ":augroup END
-
-" Custom {{{1
-" select last paste in visual mode
-nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-" buffer
-nnoremap ]b :<c-u>bnext<cr>
-nnoremap [b :<c-u>bprevious<cr>
 
 " show tag define 
 "au! CursorHold *.[ch] ++nested call PreviewWord()

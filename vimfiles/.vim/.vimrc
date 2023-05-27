@@ -1,6 +1,7 @@
 unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 packadd! matchit
+source ./simple.vim
 
 set rtp+=~/Documents/projects/Dotfiles/vimfiles/.vim/
 
@@ -202,8 +203,6 @@ let g:airline_theme='onedark'
 " Nerdtree
 nnoremap yon :<c-u>NERDTreeToggle<cr>
 
-" paste
-nnoremap yop :<c-u>set paste!<cr>
 
 " onedark.vim
 if (empty($TMUX))
