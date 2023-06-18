@@ -1,29 +1,18 @@
 --langdef=vue
 --map-vue=.vue
-# --extras=+g
-# ctags --quiet --fields=+eK --options=/home/neo/Documents/Dotfiles/ctags/vue.ctags
-# # ctags --quiet --fields=+eK --options=
-#-kinddef-vue=t,template,template block
---kinddef-vue=s,script,script block
-#--kinddef-vue=y,style,style block
-# --kinddef-vue=n,name,component names
-#--kinddef-vue=m,module,modules
-# --kinddef-vue=f,function,functions
 
---regex-vue=/^<script\ssetup>/block/s/{scope=push}
-#--regex-vue=/^import[ \t]+([a-zA-Z][a-zA-Z0-9_]+)/\1/m/
-#--regex-vue=/^import[ \t]+\{/abc/m/{scope=push}
-#
---regex-vue=/^<\/script>///{scope=pop}{placeholder}
+--kinddef-vue=n,name,name of vue component
+--kinddef-vue=m,method,method tag of vue
+--kinddef-vue=f,func,func tag of vue
 
-## component name
-#--regex-vue=/^\s{2,4}name\s?:[ \t]{0,2}"(\w+)",?/\1/n/
-#
-## methods tag
-#--regex-vue=/^\s{2}(methods):\s?\{$/\1/m/{scope=push}
-#--regex-vue=/^\s{2}\},?$///{scope=pop}{placeholder}
-#
-#--regex-vue=/^\s{4}(\w+)\(\)\s?\{$/\1/f/{scope=push}
-#--regex-vue=/^\s{4}\},?$///{scope=pop}{placeholder}
+# component name
+--regex-vue=/^\s{2,4}name\s?:[ \t]{0,2}"(\w+)",?/\1/n/
+
+# methods tag
+--regex-vue=/^\s{2}(methods):\s?\{$/\1/m/{scope=push}
+--regex-vue=/^\s{2}\},?$///{scope=pop}{placeholder}
+
+--regex-vue=/^\s{4}(\w+)\(\)\s?\{$/\1/f/{scope=push}
+--regex-vue=/^\s{4}\},?$///{scope=pop}{placeholder}
 
 #aaaa

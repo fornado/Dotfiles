@@ -1,162 +1,11 @@
-unlet! skip_defaults_vim
-source $VIMRUNTIME/defaults.vim
-packadd! matchit
-source ./simple.vim
+source /c/Users/tony5/Documents/projects/Dotfiles/vimfiles/.vim/simple.vim
 
-set rtp+=~/Documents/projects/Dotfiles/vimfiles/.vim/
+"set rtp+=~/Documents/projects/Dotfiles/vimfiles/.vim/
 
 let g:iswindows = 0
 if(has("win32") || has("win64") || has("win95") || has("win16") || has("win32unix"))
   let g:iswindows = 1
 endif
-
-" Basic
-let mapleader = ","
-
-set number
-set relativenumber
-set helplang=cn
-set cmdheight=1
-set hidden
-set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,utf-16,big5,euc-jp,latin1
-
-set smartindent
-set autoindent
-
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-
-set noexpandtab
-set nobackup
-set noswapfile
-set nowritebackup
-set noundofile
-set novisualbell
-set noerrorbells
-set vb t_vb=
-
-set autoread
-set splitbelow
-set splitright
-
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-set diffopt+=vertical
-
-set list lcs=tab:\¦\\u0020
-set cursorline
-
-" system paste board
-set clipboard=unnamed
-
-"inoremap <c-v> <c-r>+
-inoremap <c-l> <right>
-inoremap jk <esc>
-
-nnoremap <leader>q :q<cr>
-nnoremap <leader>w :w<cr>
-
-nnoremap <silent> <c-l> :<c-u>nohls<cr><c-l>
-
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
-
-" replace
-" exe last :s cmd with same params again
-nnoremap & :&&<cr>
-xnoremap & :&&<cr>
-
-" autocmd
-" autocmd
-" quickfix
-" add all filenames of qf to args list
-command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
-function! QuickfixFilenames()
-  let buffer_numbers = {}
-  for quickfix_item in getqflist()
-    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
-  endfor
-  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
-endfunction
-
-nnoremap <silent> <space>e :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc<cr>
-nnoremap <silent> <space>t :vs ~/.ctags.d/vue.ctags<cr>
-nnoremap <silent> <space><space> :<c-u>call <SID>SaveConfig()<cr>
-nnoremap <silent> <space>so :<c-u>so %<cr>
-nnoremap <silent> <space>sm :<c-u>so $MYVIMRC<cr>
-
-function! s:SaveConfig()
-  :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/.vimrc ~/.vim/vimrc
-  :!cp ~/Documents/projects/Dotfiles/vimfiles/.vim/ftplugin/vue.vim ~/.vim/ftplugin/vue.vim
-  :!cp ~/.ctags.d/vue.ctags ~/Documents/projects/Dotfiles/ctags/
-endfunction
-
-" changes
-" jump 2 last change
-nnoremap g. `.
-" jump 2 last insert place
-nnoremap g^ `^
-
-" buffer {{{
-command! BufOnly execute '%bdelete|edit#|bdelete#'
-
-" file
-if has("win32unix")
-  nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
-endif
-
-" tab
-nnoremap <space>tn :<c-u>tabnew<cr>
-nnoremap <space>tc :<c-u>tabclose<cr>
-nnoremap <space>to :<c-u>tabonly<cr>
-nnoremap <space>tf :<c-u>tabfirst<cr>
-nnoremap <space>tl :<c-u>tablast<cr>
-nnoremap [t :<c-u>tabprevious<cr>
-nnoremap ]t :<c-u>tabnext<cr>
-
-" window
-" move cursor around
-nnoremap <space>wj <c-w>j
-nnoremap <space>wk <c-w>k
-nnoremap <space>wh <c-w>h
-nnoremap <space>wl <c-w>l
-nnoremap <space>wt <c-w>t
-nnoremap <space>wb <c-w>b
-nnoremap <space>wp <c-w>p
-nnoremap <space>ws <c-w>s
-nnoremap <space>wv <c-w>v
-" maxium or minium
-nnoremap <space>w- <c-w>_
-nnoremap <space>wm <c-w>=
-nnoremap <space>w] <c-w>\|
-" open only
-nnoremap <space>wo <c-w>o
-" retote
-nnoremap <space>wr <c-w>r
-nnoremap <space>wR <c-w>R
-nnoremap <space>wx <c-w>x
-" move window
-nnoremap <space>wJ <c-w>J
-nnoremap <space>wK <c-w>K
-nnoremap <space>wH <c-w>H
-nnoremap <space>wL <c-w>L
-
-" quickfix
-nnoremap <space>cc :<c-u>cclose<cr>
-
-" select last paste in visual mode
-nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
-xnoremap * :<c-u>call <SID>VSetSearch()<cr>/<c-r>=@/<cr><cr>
-xnoremap # :<c-u>call <SID>VSetSearch()<cr>?<c-r>=@/<cr><cr>
-
-function! s:VSetSearch()
-  let temp = @s
-  normal! gv"sy
-  let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
-  let @s = temp
-endfunction
 
 " tags
 set tags=./.tags;,.tags
@@ -175,21 +24,21 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
+"Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-endwise'
 
-Plug 'sheerun/vim-polyglot'
+"Plug 'sheerun/vim-polyglot'
 Plug 'dense-analysis/ale'
 
 Plug 'posva/vim-vue'
-Plug 'mattn/emmet-vim'
+"Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'
 
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'kana/vim-textobj-user'
-Plug 'tomtom/tcomment_vim'
-Plug 'kana/vim-textobj-lastpat'
+"Plug 'kana/vim-textobj-user'
+"Plug 'tomtom/tcomment_vim'
+"Plug 'kana/vim-textobj-lastpat'
 
 call plug#end()
 
@@ -418,4 +267,4 @@ let g:gutentags_ctags_tagfile = '.tags'
 " endif
 
 colorscheme oneDark
-silent! helptags ALL
+"silent! helptags ALL
