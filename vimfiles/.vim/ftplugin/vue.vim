@@ -24,7 +24,7 @@ let s:tags = {
       \ }
 
 " pattern
-let s:func_patern = '^\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
+let s:func_pattern = '^\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
 
 " buffer maps
 nnoremap <buffer> <leader>b :<c-u>call <SID>Jump2Tag(1)<cr>
@@ -51,7 +51,7 @@ function! s:Jump2Tag(start)
   let taginfo = s:tags[char]
   let tagname = taginfo['name']
   let end = taginfo['end']
-  if tagname == s:func_patern
+  if tagname == s:func_pattern
 		call <SID>LocateFunc(a:start)
   else
 		call s:LocateTag(tagname, a:start, end)
@@ -128,7 +128,7 @@ function! s:SelectCurFunc()
 	let max = 8
 	while find == 0 && max > 0
 		let cur = getline('.')
-		if (cur =~# s:func_patern)
+		if (cur =~# s:func_pattern)
 			let lastpos = getcurpos('.')
 			let find = 1
 			break
@@ -146,6 +146,8 @@ function! s:SelectCurFunc()
 	execute 'normal! ' . '^V$%'
 endfunction
 
+nnoremap <buffer> [m :<c-u>call LocateFunc(1)<cr>
+nnoremap <buffer> ]m :<c-u>call LocateFunc(0)<cr>
 function! s:LocateFunc(start)
 	call s:SelectCurFunc()
 	exe 'normal! ' . (a:start ? 'O' : '') . "\<esc>"

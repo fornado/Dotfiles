@@ -3,6 +3,8 @@ source $VIMRUNTIME/defaults.vim
 packadd! matchit
 
 set rtp+=~/Documents/projects/Dotfiles/vimfiles/.vim/
+set rtp+=~/.vim/plugged/vimcdoc
+
 "let $VENDOR_PATH = $HOME . '/Documents/Dotfiles/vimfiles/.vim/pack/vendor/start'
 "let $FUGITVIE = $VENDOR_PATH . '/vim-fugitive'
 "let $VIMCDOC = $VENDOR_PATH . '/vimcdoc'
@@ -68,9 +70,6 @@ cnoremap <c-h> <bs>
 nnoremap g. `.
 " back the last quit insert mode
 nnoremap g^ `^
-" keep cursor and hl all matched
-nnoremap g* *N
-vnoremap g* *N
 
 nnoremap <space>i migg=G`izz
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
@@ -79,12 +78,9 @@ if has("win32unix")
 	nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
 endif
 
-command! BufOnly execute '%bdelete|edit#|bdelete#'
-
 " exe last :s cmd with same params again
 nnoremap & :&&<cr>
 xnoremap & :&&<cr>
-
 
 " Custom {{{1
 " select last paste in visual mode
@@ -144,13 +140,27 @@ nnoremap ]t :<c-u>tabnext<cr>
 " buffer
 nnoremap ]b :<c-u>bnext<cr>
 nnoremap [b :<c-u>bprevious<cr>
+nnoremap <space>b :b <c-d>
+nnoremap <space>be :e **/
+nnoremap <space>bq :b#<cr>
+nnoremap <space>bo :BufOnly<cr>
+nnoremap <space>bf :bfirst<cr>
+nnoremap <space>bl :blast<cr>
+nnoremap <space>bn :bnext<cr>
+nnoremap <space>bp :bprevious<cr>
+
+command! BufOnly execute '%bdelete|edit#|bdelete#'
 
 " dir
 nnoremap <space>d :<c-u>pwd<cr>
 
 " line
+" [( [{
 nnoremap <space>ll <c-d>
 nnoremap <space>lh <c-u>
+nnoremap <space>lb _
+nnoremap <space>le g_
+nnoremap <space>ls :call <SID>stripTrailingWhitespace()<cr>
 
 nnoremap [<space> O<esc>j
 nnoremap [<space>d kdd
@@ -158,7 +168,12 @@ nnoremap ]<space> o<esc>k
 nnoremap ]<space>d jddk
 
 " functionality {{{3
-" select last paste in visual mode
+" hl and search
+" g. g, g; ge  g_, g0 gm g^ gI
+nnoremap g* *N
+vnoremap g* *N
+" use [i/I or ]i/I
+nnoremap <leader>i :ilist<space>
 xnoremap * :<c-u>call <SID>VSetSearch()<cr>/<c-r>=@/<cr><cr>
 xnoremap # :<c-u>call <SID>VSetSearch()<cr>?<c-r>=@/<cr><cr>
 
@@ -180,18 +195,19 @@ nnoremap yoq :<c-u>cwindow<cr>
 " tags
 "set tags=./.tags;,.tags
 "nnoremap <silent> <space>t :vs ~/.ctags.d/vue.ctags<cr>
+nnoremap <leader>j :tjump /
 
-" Netrw
-let g:netrw_usetab = 1
-let g:netrw_winsize = -50
-nnoremap yon <Plug>NetrwShrink
-
-let g:netrw_liststyle = 3
-let g:netrw_list_hide = netrw_gitignore#Hide() .. '.*\.swp$'
+" makergp
+nnoremap <leader>m :make<cr>
 
 " quickfix
 nnoremap <space>cc :<c-u>cclose<cr>
 
+" statusline
+set laststatus=2
+set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%l,%v]
+
+" args
 " add all filenames of qf to args list
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
 function! QuickfixFilenames()
@@ -201,6 +217,23 @@ function! QuickfixFilenames()
 	endfor
 	return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
+
+" grep
+nnoremap <leader>g :grep<space>
+
+" snippets
+"
+" delete trailing whitespace
+function! s:stripTrailingWhitespace()
+	if !&binary && &filetype != 'diff'
+		normal mz
+		normal Hmy
+		%s/\s\+$//e
+		normal 'yz<cr>
+		normal 'z
+	endif
+endfunction
+
 
 " autocmd {{{2
 ":autocmd [group] {events} {file-pattern} [++nested] {command}
@@ -246,3 +279,16 @@ endfunction
 "	wincmd p			" 返回原来的窗口
 "  endif
 "endif
+"
+"
+" Plugins {{{1
+" Netrw {{{2
+let g:netrw_usetab = 1
+let g:netrw_banner=1
+let g:netrw_winsize=25
+let g:netrw_liststyle=3
+let g:Netrw_altv=1
+let g:netrw_browse_split=4
+let g:netrw_list_hide = netrw_gitignore#Hide() .. '.*\.swp$'
+nnoremap yon <Plug>NetrwShrink
+
