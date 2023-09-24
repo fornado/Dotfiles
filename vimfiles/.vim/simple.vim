@@ -2,9 +2,6 @@ unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 packadd! matchit
 
-set rtp+=~/Documents/projects/Dotfiles/vimfiles/.vim/
-set rtp+=~/.vim/plugged/vimcdoc
-
 "let $VENDOR_PATH = $HOME . '/Documents/Dotfiles/vimfiles/.vim/pack/vendor/start'
 "let $FUGITVIE = $VENDOR_PATH . '/vim-fugitive'
 "let $VIMCDOC = $VENDOR_PATH . '/vimcdoc'
@@ -35,6 +32,7 @@ set splitright
 
 set cmdheight=1
 set cursorline
+hi cursorline guibg=#2C323C
 set helplang=cn
 set fileencodings=utf-8
 
@@ -44,11 +42,17 @@ set nowritebackup
 set vb t_vb=
 
 set diffopt+=vertical
+"hi DiffAdd guifg=#5C6370 guibg=#228B22
+hi DiffAdd guifg=#5C6370
+hi DiffText guifg=white
+
 set list lcs=tab:\¦\\u0020
 set clipboard=unnamed
 
 set foldmethod=marker
 set formatoptions+=ro
+
+"colorscheme onedark
 "set comments=://
 
 " mappings {{{2
@@ -112,6 +116,7 @@ nnoremap <space>wp <c-w>p
 nnoremap <space>w- <c-w>_
 nnoremap <space>wm <c-w>=
 nnoremap <space>w] <c-w>\|
+nnoremap <space>w+ <c-w>_<c-w>\|
 " open only
 nnoremap <space>wo <c-w>o
 " retote
@@ -146,8 +151,8 @@ nnoremap <space>bq :b#<cr>
 nnoremap <space>bo :BufOnly<cr>
 nnoremap <space>bf :bfirst<cr>
 nnoremap <space>bl :blast<cr>
-nnoremap <space>bn :bnext<cr>
-nnoremap <space>bp :bprevious<cr>
+"nnoremap <space>bn :bnext<cr>
+"nnoremap <space>bp :bprevious<cr>
 
 command! BufOnly execute '%bdelete|edit#|bdelete#'
 
@@ -201,6 +206,7 @@ nnoremap <leader>j :tjump /
 nnoremap <leader>m :make<cr>
 
 " quickfix
+" :cwindow
 nnoremap <space>cc :<c-u>cclose<cr>
 
 " statusline
@@ -285,10 +291,14 @@ endfunction
 " Netrw {{{2
 let g:netrw_usetab = 1
 let g:netrw_banner=1
-let g:netrw_winsize=25
+let g:netrw_winsize=50
 let g:netrw_liststyle=3
 let g:Netrw_altv=1
 let g:netrw_browse_split=4
 let g:netrw_list_hide = netrw_gitignore#Hide() .. '.*\.swp$'
 nnoremap yon <Plug>NetrwShrink
 
+"set rtp+=~/Documents/projects/Dotfiles/vimfiles/.vim/
+set rtp+=~/.vim/plugged/vimcdoc
+set rtp+=~/.vim/plugged/onedark.vim
+colorscheme oneDark

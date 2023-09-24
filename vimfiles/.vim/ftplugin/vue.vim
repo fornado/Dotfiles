@@ -16,12 +16,14 @@ let s:tag_data = 'data()'
 
 let s:tag_end = '$%k$'
 let s:tags = {
-      \  'd': { 'name': 'data()', 'end': 'j$%k$' },
-      \  'm': { 'name': 'methods:', 'end': s:tag_end },
-      \  'c': { 'name': 'computed:', 'end': s:tag_end },
-      \  't': { 'name': 'created()', 'end': s:tag_end },
-      \  's': { 'name': '<script>', 'end': '}k$'}
-      \ }
+			\  'd': { 'name': 'data()', 'end': 'j$%k$' },
+			\  'm': { 'name': 'methods:', 'end': s:tag_end },
+			\  'c': { 'name': 'computed:', 'end': s:tag_end },
+			\  't': { 'name': 'created()', 'end': s:tag_end },
+			\  's': { 'name': '<script>', 'end': '}k$', 'range': { 'start': '<script\%(\s.*\)\?>', 'end': '</script>', 'cf': '// %s'} },
+			\  'l': { 'name': '<template>', 'end': '}k$', 'range': { 'start': '<template>', 'end': '</template>', 'cf': '<!-- %s -->'} },
+			\  'y': { 'name': '<style>', 'end': '}k$', 'range': { 'start': '<style\%(\s.*\)\?>', 'end': '</style>', 'cf': '// %s'} }
+			\ }
 
 " pattern
 let s:func_pattern = '^\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
@@ -29,80 +31,6 @@ let s:func_pattern = '^\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
 " buffer maps
 nnoremap <buffer> <leader>b :<c-u>call <SID>Jump2Tag(1)<cr>
 nnoremap <buffer> <leader>e :<c-u>call <SID>Jump2Tag(0)<cr>
-" vnoremap <buffer> ap :<c-u>call <SID>AddProperty()<cr>
-
-" get text of selected
-function! s:GetVisualSelection()
-  let [lnum1, col1] = getpos("'<")[1:2]
-  let [lnum2, col2] = getpos("'>")[1:2]
-  let lines = getline(lnum1, lnum2)
-  let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
-  let lines[0] = lines[0][col1 - 1:]
-  return join(lines, "\n")
-endfunction
-
-" jump =====================================================
-function! s:Jump2Tag(start)
-  let char = getcharstr()
-  if !has_key(s:tags, char)
-    echomsg 'char ' . char . ' not supported'
-    return
-  endif
-  let taginfo = s:tags[char]
-  let tagname = taginfo['name']
-  let end = taginfo['end']
-  if tagname == s:func_pattern
-		call <SID>LocateFunc(a:start)
-  else
-		call s:LocateTag(tagname, a:start, end)
-  endif
-endfunction
-
-" add a method at the end of methods block
-function! s:AddProperty()
-	let mdsign = <SID>GetVisualSelection()
-	let char = nr2char(getchar())
-	let start = char == 'i' ? 1 : 0
-
-	let tagname = nr2char(getchar())
-	let tagname = Conver2TagName(tagname)
-
-	let cmd = (char == 'i' ? 'O' : 'o')
-	if tagname == s:tag_data
-		let cmd = (char == 'i' ? 'o' : 'O')
-	endif
-
-	let suffix = ' {},'
-	if tagname == s:tag_data
-		let suffix = ': '
-	endif
-
-	call s:LocateTag(tagname, start, '')
-	execute 'normal! ' . cmd . mdsign . suffix
-	execute 'normal! h'
-endfunction
-
-
-function! s:LocateTag(tagname, start, endPoint)
-  let pattern = s:tag_prefix . a:tagname . s:tag_sufix
-  let flag = 'w'
-  if !a:start
-    let flag = 'bW'
-  endif
-  let save_cursor = getcurpos()
-  normal G$
-  let line = search(pattern, flag)
-  if line == 0
-			call setpos('.', save_cursor)
-      return
-  endif
-  if !a:start
-    exe 'normal ' . a:endPoint
-  endif
-  normal zz
-endfunction
-
-" fzf.vim
 command! -bang ProjectFiles call fzf#vim#files('~/Documents/projects/', <bang>0)
 
 " function ==========================================
@@ -185,3 +113,51 @@ inoreab cl console.log()<Left>
 " unfold all
 " unfold self only
 setlocal foldmethod=indent
+
+" commentary
+nnoremap <buffer> <expr> gc <SID>Commentary()
+nnoremap <buffer> <expr> gcc <SID>Commentary() . '_'
+onoremap <buffer> <expr> gc <SID>Commentary()
+xnoremap <buffer> <expr> gc <SID>Commentary()
+function! s:getCommentaryFormat()
+	let commentary_format = ''
+	let pairs = filter(copy(s:tags), "v:key == 's' || v:key == 'l' || v:key == 'y'")
+	let pairs = values(pairs)
+	let pairs = map(pairs, "v:val['range']")
+
+	for pair in pairs
+		let matchrow = searchpair(pair['start'], '', pair['end'], 'rn')
+		if matchrow != 0
+			let commentary_format = pair['cf']
+			break
+		endif
+	endfor
+	echomsg 'getCommentaryFormat:' .commentary_format
+	return commentary_format
+endfunction
+
+function! s:Commentary(...) abort
+	if !a:0
+		let &operatorfunc = matchstr(expand('<sfile>'), '[^. ]*$')
+		return 'g@'
+	elseif a:0 > 1
+		let [lnum1, lnum2] = [a:1, a:2]
+	else
+		let [lnum1, lnum2] = [line("'["), line("']")]
+	endif
+
+	let temp = get(b:, 'commentary_format')
+	let format = s:getCommentaryFormat()
+	if !empty(format)
+		let b:commentary_format = format
+	endif
+
+	let cmd = ''. lnum1 . ',' . lnum2 . 'Commentary'
+	echomsg 'cmd:' . cmd
+	silent execute cmd
+
+	if !empty(format)
+		let b:commentary_format = temp
+	endif
+	return ''
+endfunction
