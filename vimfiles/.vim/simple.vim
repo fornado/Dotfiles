@@ -63,6 +63,7 @@ nnoremap <silent> <space><space> :<c-u>wa<cr>
 nnoremap <silent> <space>so :<c-u>so %<cr>
 nnoremap <silent> <space>sm :<c-u>so $MYVIMRC<cr>
 nnoremap <space>e :<c-u>vs ~/Documents/projects/Dotfiles/vimfiles/.vim/simple.vim<cr>
+nnoremap <leader><c-l> :<c-u>message clear<cr>
 
 inoremap jk <esc>
 inoremap <c-l> <right>
@@ -92,7 +93,6 @@ nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " common {{{2
 " window
-" move around
 nnoremap <space>wj <c-w>j
 nnoremap <space>wk <c-w>k
 nnoremap <space>wh <c-w>h
@@ -100,30 +100,14 @@ nnoremap <space>wl <c-w>l
 nnoremap <space>wt <c-w>t
 nnoremap <space>wb <c-w>b
 nnoremap <space>wp <c-w>p
-" terminal
-"tnoremap <space>wj <c-w>j
-"tnoremap <space>wk <c-w>k
-"tnoremap <space>wh <c-w>h
-"tnoremap <space>wl <c-w>l
-"tnoremap <space>wt <c-w>t
-"tnoremap <space>wb <c-w>b
-"tnoremap <space>wp <c-w>p
-"tnoremap <space>w- <c-w>_
-"tnoremap <space>wm <c-w>=
-"tnoremap <space>w] <c-w>\|
-
-" maxium or minium
 nnoremap <space>w- <c-w>_
 nnoremap <space>wm <c-w>=
 nnoremap <space>w] <c-w>\|
 nnoremap <space>w+ <c-w>_<c-w>\|
-" open only
 nnoremap <space>wo <c-w>o
-" retote
 nnoremap <space>wr <c-w>r
 nnoremap <space>wR <c-w>R
 nnoremap <space>wx <c-w>x
-" display
 nnoremap <space>wv <c-w>v
 nnoremap <space>ws <c-w>s
 nnoremap <space>wJ <c-w>J
@@ -133,6 +117,29 @@ nnoremap <space>wL <c-w>L
 nnoremap <space>wT <c-w>T
 "nnoremap <space>pq :<c-u>pclose<cr>
 
+tnoremap <leader>wj <c-w>j
+tnoremap <leader>wk <c-w>k
+tnoremap <leader>wh <c-w>h
+tnoremap <leader>wl <c-w>l
+tnoremap <leader>wt <c-w>t
+tnoremap <leader>wb <c-w>b
+tnoremap <leader>wp <c-w>p
+tnoremap <leader>w- <c-w>_
+tnoremap <leader>wm <c-w>=
+tnoremap <leader>w] <c-w>\|
+tnoremap <leader>w+ <c-w>_<c-w>\|
+tnoremap <leader>wo <c-w>o
+tnoremap <leader>wr <c-w>r
+tnoremap <leader>wR <c-w>R
+tnoremap <leader>wx <c-w>x
+tnoremap <leader>wv <c-w>:vertical terminal<cr>
+tnoremap <leader>wJ <c-w>J
+tnoremap <leader>wK <c-w>K
+tnoremap <leader>wH <c-w>H
+tnoremap <leader>wL <c-w>L
+tnoremap <leader>wT <c-w>T
+tnoremap <leader>q <c-w><c-c>
+
 " tab
 nnoremap <space>tn :<c-u>tabnew<cr>
 nnoremap <space>tc :<c-u>tabclose<cr>
@@ -141,6 +148,8 @@ nnoremap <space>tf :<c-u>tabfirst<cr>
 nnoremap <space>tl :<c-u>tablast<cr>
 nnoremap [t :<c-u>tabprevious<cr>
 nnoremap ]t :<c-u>tabnext<cr>
+tnoremap [t <c-w>gt
+tnoremap ]t <c-w>gT
 
 " buffer
 nnoremap ]b :<c-u>bnext<cr>
@@ -153,11 +162,16 @@ nnoremap <space>bf :bfirst<cr>
 nnoremap <space>bl :blast<cr>
 "nnoremap <space>bn :bnext<cr>
 "nnoremap <space>bp :bprevious<cr>
+tnoremap ]b <c-w>:<c-u>bnext<cr>
+tnoremap [b <c-w>:<c-u>bprevious<cr>
 
 command! BufOnly execute '%bdelete|edit#|bdelete#'
 
 " dir
 nnoremap <space>d :<c-u>pwd<cr>
+
+" cmdline
+nnoremap <space>; :<c-u>
 
 " line
 " [( [{
@@ -191,7 +205,7 @@ endfunction
 
 " toggle
 nnoremap yot :<c-u>terminal<cr>
-tnoremap yot <c-w>:q!<cr>
+tnoremap yot <c-w>:hide<cr>
 
 nnoremap yop :<c-u>set paste!<cr>
 nnoremap yog :<c-u>Git<cr>

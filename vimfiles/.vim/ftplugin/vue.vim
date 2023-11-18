@@ -9,11 +9,6 @@ setlocal scrolloff=2
 setlocal tabstop=2
 
 " tags
-let s:tag_prefix = '^\(\s\{0}\|\s\{2}\|\s\{4}\)\zs'
-let s:tag_sufix = '\ze\s\{0,2}{\{0,1}'
-
-let s:tag_data = 'data()'
-
 let s:tag_end = '$%k$'
 let s:tags = {
 			\  'd': { 'name': 'data()', 'end': 'j$%k$' },
@@ -31,6 +26,7 @@ let s:func_pattern = '^\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
 " buffer maps
 nnoremap <buffer> <leader>b :<c-u>call <SID>Jump2Tag(1)<cr>
 nnoremap <buffer> <leader>e :<c-u>call <SID>Jump2Tag(0)<cr>
+
 command! -bang ProjectFiles call fzf#vim#files('~/Documents/projects/', <bang>0)
 
 " function ==========================================
