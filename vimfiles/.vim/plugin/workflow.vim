@@ -1,5 +1,10 @@
 vim9script
 
+if exists("g:loaded_workflow")
+	finish
+endif
+g:loaded_workflow = 1
+
 # quickfix {{{1
 # oldfiles {{{2
 command! -nargs=0 -bar QO call setqflist([], ' ', {'lines': v:oldfiles, 'efm': '%f', 'quickfixtextfunc': 'QfOldFiles'})

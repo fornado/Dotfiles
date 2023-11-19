@@ -157,3 +157,16 @@ function! s:Commentary(...) abort
 	endif
 	return ''
 endfunction
+
+au BufNewFile,BufRead *.spec.js set tabstop=2 ft=vue
+nnoremap <buffer> <leader>r :<c-u>call <SID>Run()<cr>
+nnoremap <buffer> <leader><c-l> :<c-u>call <SID>Clear()<cr>
+
+def Run()
+	const cmd = "yarn test " .. expand("%:p") .. "\<CR>"
+	call term_sendkeys(2, cmd)
+enddef
+
+def Clear()
+	call term_sendkeys(2, "clear\<CR>")
+enddef

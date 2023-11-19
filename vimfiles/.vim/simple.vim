@@ -2,14 +2,8 @@ unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 packadd! matchit
 
-"let $VENDOR_PATH = $HOME . '/Documents/Dotfiles/vimfiles/.vim/pack/vendor/start'
-"let $FUGITVIE = $VENDOR_PATH . '/vim-fugitive'
-"let $VIMCDOC = $VENDOR_PATH . '/vimcdoc'
-"let $FZFVIM = $VENDOR_PATH . '/fzf.vim'
-"let $FZF = $VENDOR_PATH . '/fzf'
-"set runtimepath=$FUGITVIE,$VIMRUNTIME
-
 " Basic {{{1
+" options {{{2
 let mapleader = ","
 
 set number
@@ -30,9 +24,9 @@ set smartcase
 set splitbelow
 set splitright
 
+hi cursorline guibg=#2C323C
 set cmdheight=1
 set cursorline
-hi cursorline guibg=#2C323C
 set helplang=cn
 set fileencodings=utf-8
 
@@ -51,19 +45,19 @@ set clipboard=unnamed
 
 set foldmethod=marker
 set formatoptions+=ro
-
-"colorscheme onedark
-"set comments=://
+set laststatus=2
+set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%l,%v]
 
 " mappings {{{2
-nnoremap <leader>w :<c-u>update %<cr>
-nnoremap <leader>q :<c-u>quit<cr>
-nnoremap <silent> <c-l> :<c-u>nohls<cr><c-l>
-nnoremap <silent> <space><space> :<c-u>wa<cr>
-nnoremap <silent> <space>so :<c-u>so %<cr>
-nnoremap <silent> <space>sm :<c-u>so $MYVIMRC<cr>
-nnoremap <space>e :<c-u>vs ~/Documents/projects/Dotfiles/vimfiles/.vim/simple.vim<cr>
-nnoremap <leader><c-l> :<c-u>message clear<cr>
+nnoremap <leader>w :update %<cr>
+nnoremap <leader>q :quit<cr>
+tnoremap <leader>q <c-w><c-c>
+nnoremap <silent> <c-l> :nohls<cr><c-l>
+nnoremap <silent> <space><space> :wa<cr>
+nnoremap <silent> <space>so :so %<cr>
+nnoremap <silent> <space>sm :so $MYVIMRC<cr>
+nnoremap <space>e :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/simple.vim<cr>
+nnoremap <leader><c-l> :mes clear<cr>
 
 inoremap jk <esc>
 inoremap <c-l> <right>
@@ -80,19 +74,18 @@ nnoremap <space>i migg=G`izz
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h') . '/' : '%%'
 
 if has("win32unix")
-	nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
+    nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
 endif
 
 " exe last :s cmd with same params again
 nnoremap & :&&<cr>
 xnoremap & :&&<cr>
 
-" Custom {{{1
 " select last paste in visual mode
 nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
 
-" common {{{2
-" window
+" common {{{1
+" window {{{2
 nnoremap <space>wj <c-w>j
 nnoremap <space>wk <c-w>k
 nnoremap <space>wh <c-w>h
@@ -115,8 +108,9 @@ nnoremap <space>wK <c-w>K
 nnoremap <space>wH <c-w>H
 nnoremap <space>wL <c-w>L
 nnoremap <space>wT <c-w>T
-"nnoremap <space>pq :<c-u>pclose<cr>
+"nnoremap <space>pq :pclose<cr>
 
+" terminal {{{2
 tnoremap <leader>wj <c-w>j
 tnoremap <leader>wk <c-w>k
 tnoremap <leader>wh <c-w>h
@@ -138,169 +132,108 @@ tnoremap <leader>wK <c-w>K
 tnoremap <leader>wH <c-w>H
 tnoremap <leader>wL <c-w>L
 tnoremap <leader>wT <c-w>T
-tnoremap <leader>q <c-w><c-c>
+tnoremap ]b <c-w>:bnext<cr>
+tnoremap [b <c-w>:bprevious<cr>
 
-" tab
-nnoremap <space>tn :<c-u>tabnew<cr>
-nnoremap <space>tc :<c-u>tabclose<cr>
-nnoremap <space>to :<c-u>tabonly<cr>
-nnoremap <space>tf :<c-u>tabfirst<cr>
-nnoremap <space>tl :<c-u>tablast<cr>
-nnoremap [t :<c-u>tabprevious<cr>
-nnoremap ]t :<c-u>tabnext<cr>
+
+" tab {{{2
+nnoremap <space>tn :tabnew<cr>
+nnoremap <space>tc :tabclose<cr>
+nnoremap <space>to :tabonly<cr>
+nnoremap <space>tf :tabfirst<cr>
+nnoremap <space>tl :tablast<cr>
+nnoremap [t :tabprevious<cr>
+nnoremap ]t :tabnext<cr>
 tnoremap [t <c-w>gt
 tnoremap ]t <c-w>gT
 
-" buffer
-nnoremap ]b :<c-u>bnext<cr>
-nnoremap [b :<c-u>bprevious<cr>
+" buffer {{{2
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprevious<cr>
 nnoremap <space>b :b <c-d>
 nnoremap <space>be :e **/
 nnoremap <space>bq :b#<cr>
 nnoremap <space>bo :BufOnly<cr>
 nnoremap <space>bf :bfirst<cr>
 nnoremap <space>bl :blast<cr>
-"nnoremap <space>bn :bnext<cr>
-"nnoremap <space>bp :bprevious<cr>
-tnoremap ]b <c-w>:<c-u>bnext<cr>
-tnoremap [b <c-w>:<c-u>bprevious<cr>
-
 command! BufOnly execute '%bdelete|edit#|bdelete#'
 
-" dir
-nnoremap <space>d :<c-u>pwd<cr>
+" dir {{{2
+nnoremap <space>d :pwd<cr>
 
-" cmdline
+" cmdline {{{2
 nnoremap <space>; :<c-u>
-
-" line
-" [( [{
-nnoremap <space>ll <c-d>
-nnoremap <space>lh <c-u>
-nnoremap <space>lb _
-nnoremap <space>le g_
-nnoremap <space>ls :call <SID>stripTrailingWhitespace()<cr>
-
+" line {{{2
 nnoremap [<space> O<esc>j
 nnoremap [<space>d kdd
 nnoremap ]<space> o<esc>k
 nnoremap ]<space>d jddk
+nnoremap <space>lj <c-d>
+nnoremap <space>lk <c-u>
+nnoremap <space>lb _
+nnoremap <space>le g_
+nnoremap <space>ls :call <SID>stripTrailingWhitespace()<cr>
+function! s:stripTrailingWhitespace()
+    if !&binary && &filetype != 'diff'
+        normal mz
+        normal Hmy
+        %s/\s\+$//e
+        normal 'yz<cr>
+        normal 'z
+    endif
+endfunction
 
-" functionality {{{3
-" hl and search
-" g. g, g; ge  g_, g0 gm g^ gI
+" functionality {{{2
 nnoremap g* *N
 vnoremap g* *N
 " use [i/I or ]i/I
-nnoremap <leader>i :ilist<space>
-xnoremap * :<c-u>call <SID>VSetSearch()<cr>/<c-r>=@/<cr><cr>
-xnoremap # :<c-u>call <SID>VSetSearch()<cr>?<c-r>=@/<cr><cr>
-
+" nnoremap <leader>i :ilist<space>
+xnoremap * :call <SID>VSetSearch()<cr>/<c-r>=@/<cr><cr>
+xnoremap # :call <SID>VSetSearch()<cr>?<c-r>=@/<cr><cr>
 function! s:VSetSearch()
-	let temp = @s
-	normal! gv"sy
-	let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
-	let @s = temp
+    let temp = @s
+    normal! gv"sy
+    let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
+    let @s = temp
 endfunction
 
-" toggle
-nnoremap yot :<c-u>terminal<cr>
+" toggle {{{2
+nnoremap yot :terminal<cr>
 tnoremap yot <c-w>:hide<cr>
 
-nnoremap yop :<c-u>set paste!<cr>
-nnoremap yog :<c-u>Git<cr>
-nnoremap yoq :<c-u>cwindow<cr>
+nnoremap yop :set paste!<cr>
+nnoremap yog :Git<cr>
+nnoremap yoq :cwindow<cr>
 "
 " tags
 "set tags=./.tags;,.tags
 "nnoremap <silent> <space>t :vs ~/.ctags.d/vue.ctags<cr>
-nnoremap <leader>j :tjump /
+" nnoremap <leader>j :tjump /
 
-" makergp
+" makergp {{{2
 nnoremap <leader>m :make<cr>
 
-" quickfix
+" quickfix {{{2
 " :cwindow
-nnoremap <space>cc :<c-u>cclose<cr>
+nnoremap <space>cc :cclose<cr>
+nnoremap <space>qc :call setqflist([], 'f')<cr>
+nnoremap <space>qo :colder<cr>
+nnoremap <space>qn :cnewer<cr>
 
-" statusline
-set laststatus=2
-set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%l,%v]
-
-" args
+" args {{{2
 " add all filenames of qf to args list
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
 function! QuickfixFilenames()
-	let buffer_numbers = {}
-	for quickfix_item in getqflist()
-		let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
-	endfor
-	return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+    let buffer_numbers = {}
+    for quickfix_item in getqflist()
+        let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+    endfor
+    return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
-" grep
+" grep {{{2
 nnoremap <leader>g :grep<space>
 
-" snippets
-"
-" delete trailing whitespace
-function! s:stripTrailingWhitespace()
-	if !&binary && &filetype != 'diff'
-		normal mz
-		normal Hmy
-		%s/\s\+$//e
-		normal 'yz<cr>
-		normal 'z
-	endif
-endfunction
-
-
-" autocmd {{{2
-":autocmd [group] {events} {file-pattern} [++nested] {command}
-":augroup updateDate
-":  autocmd!
-":  autocmd BufWritePre *  call DateInsert()
-":augroup END
-
-" show tag define
-"au! CursorHold *.[ch] ++nested call PreviewWord()
-"func PreviewWord()
-"if &previewwindow			" 不要在预览窗口里执行
-"  return
-"endif
-"let w = expand("<cword>")		" 在当前光标位置抓词
-"if w =~ '\a'			" 如果该单词包括一个字母
-"
-"  " 在显示下一个标签之前，删除所有现存的语法高亮
-"  silent! wincmd P			" 跳转至预览窗口
-"  if &previewwindow		" 如果确实转到了预览窗口……
-"	match none			" 删除语法高亮
-"	wincmd p			" 回到原来的窗口
-"  endif
-"
-"  " 试着显示当前光标处匹配的标签
-"  try
-"	 exe "ptag " .. w
-"  catch
-"	return
-"  endtry
-"
-"  silent! wincmd P			" 跳转至预览窗口
-"  if &previewwindow		" 如果确实转到了预览窗口……
-" if has("folding")
-"   silent! .foldopen		" 展开折叠的行
-" endif
-" call search("$", "b")		" 到前一行的行尾
-" let w = substitute(w, '\\', '\\\\', "")
-" call search('\<\V' .. w .. '\>')	" 定位光标在匹配的单词上
-" " 给在此位置的单词加上匹配高亮
-"	hi previewWord term=bold ctermbg=green guibg=green
-" exe 'match previewWord "\%' .. line(".") .. 'l\%' .. col(".") .. 'c\k*"'
-"	wincmd p			" 返回原来的窗口
-"  endif
-"endif
-"
-"
 " Plugins {{{1
 " Netrw {{{2
 let g:netrw_usetab = 1
