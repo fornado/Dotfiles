@@ -3,8 +3,21 @@ source $VIMRUNTIME/defaults.vim
 packadd! matchit
 
 " Basic {{{1
+let $VIMHOME = $HOME . '/.vim'
+if has('win32') || has ('win64')
+	let $VIMHOME = $VIM . '/vimfiles'
+endif
+
+let $PLUGINS = $HOME . '/Documents/projects/Dotfiles/vimfiles/.vim/plugins'
+let $VUETEST = $PLUGINS . '/vim-vuetest'
+" let temp = &rtp
+" set rtp=$VUETEST
+" set rtp+=temp
+set rtp+=$VUETEST
+
 " options {{{2
 let mapleader = ","
+setlocal foldmethod=marker
 
 set number
 set relativenumber
@@ -22,7 +35,6 @@ set smartcase
 set splitbelow
 set splitright
 set cmdheight=1
-
 set cursorline
 hi cursorline guibg=#2C323C
 
@@ -40,8 +52,6 @@ hi DiffText guifg=white
 
 set list lcs=tab:\¦\\u0020
 set clipboard=unnamed
-
-setlocal foldmethod=marker
 set formatoptions+=ro
 set laststatus=2
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%l,%v]
@@ -53,7 +63,6 @@ tnoremap <leader>q <c-w><c-c>
 nnoremap <silent> <c-l> :nohls<cr><c-l>
 nnoremap <silent> <space><space> :wa<cr>
 nnoremap <silent> <space>so :so %<cr>
-nnoremap <silent> <space>sm :so $MYVIMRC<cr>
 nnoremap <space>e :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/simple.vim<cr>
 nnoremap <leader><c-l> :mes clear<cr>:nohls<cr><c-l>
 
@@ -99,29 +108,29 @@ nnoremap <space>wT <c-w>T
 "nnoremap <space>pq :pclose<cr>
 
 " terminal {{{2
-tnoremap <leader>wj <c-w>j
-tnoremap <leader>wk <c-w>k
-tnoremap <leader>wh <c-w>h
-tnoremap <leader>wl <c-w>l
-tnoremap <leader>wt <c-w>t
-tnoremap <leader>wb <c-w>b
-tnoremap <leader>wp <c-w>p
-tnoremap <leader>w- <c-w>_
-tnoremap <leader>wm <c-w>=
-tnoremap <leader>w] <c-w>\|
-tnoremap <leader>w[ <c-w>\|
-tnoremap <leader>w+ <c-w>_<c-w>\|
-tnoremap <leader>wo <c-w>o
-tnoremap <leader>wr <c-w>r
-tnoremap <leader>wR <c-w>R
-tnoremap <leader>wx <c-w>x
-tnoremap <leader>wv <c-w>:vertical terminal<cr>
-tnoremap <leader>ws <c-w>:terminal<cr>
-tnoremap <leader>wJ <c-w>J
-tnoremap <leader>wK <c-w>K
-tnoremap <leader>wH <c-w>H
-tnoremap <leader>wL <c-w>L
-tnoremap <leader>wT <c-w>T
+tnoremap <space>wj <c-w>j
+tnoremap <space>wk <c-w>k
+tnoremap <space>wh <c-w>h
+tnoremap <space>wl <c-w>l
+tnoremap <space>wt <c-w>t
+tnoremap <space>wb <c-w>b
+tnoremap <space>wp <c-w>p
+tnoremap <space>w- <c-w>_
+tnoremap <space>wm <c-w>=
+tnoremap <space>w] <c-w>\|
+tnoremap <space>w[ <c-w>\|
+tnoremap <space>w+ <c-w>_<c-w>\|
+tnoremap <space>wo <c-w>o
+tnoremap <space>wr <c-w>r
+tnoremap <space>wR <c-w>R
+tnoremap <space>wx <c-w>x
+tnoremap <space>wv <c-w>:vertical terminal<cr>
+tnoremap <space>ws <c-w>:terminal<cr>
+tnoremap <space>wJ <c-w>J
+tnoremap <space>wK <c-w>K
+tnoremap <space>wH <c-w>H
+tnoremap <space>wL <c-w>L
+tnoremap <space>wT <c-w>T
 tnoremap ]b <c-w>:bnext<cr>
 tnoremap [b <c-w>:bprevious<cr>
 
@@ -133,6 +142,12 @@ nnoremap <space>tf :tabfirst<cr>
 nnoremap <space>tl :tablast<cr>
 nnoremap [t :tabprevious<cr>
 nnoremap ]t :tabnext<cr>
+
+tnoremap <space>tn <c-w>:tabnew<cr>
+tnoremap <space>tc <c-w>:tabclose<cr>
+tnoremap <space>to <c-w>:tabonly<cr>
+tnoremap <space>tf <c-w>:tabfirst<cr>
+tnoremap <space>tl <c-w>:tablast<cr>
 tnoremap [t <c-w>gt
 tnoremap ]t <c-w>gT
 
