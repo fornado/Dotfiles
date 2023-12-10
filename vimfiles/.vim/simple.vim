@@ -4,18 +4,15 @@ packadd! matchit
 
 " Basic {{{1
 let $VIMHOME = $HOME . '/Documents/projects/Dotfiles/vimfiles/.vim'
-
 let $PLUGINS = $VIMHOME . '/plugins'
 let $LIB = $VIMHOME . '/lib'
 let $VUETEST = $PLUGINS . '/vim-vuetest'
-" let temp = &rtp
-" set rtp=$VUETEST
-" set rtp+=temp
+
 set rtp+=$VUETEST
 
 " options {{{2
 let mapleader = ","
-setlocal foldmethod=marker
+"set foldmethod=marker
 
 set number
 set relativenumber
@@ -61,7 +58,7 @@ tnoremap <leader>q <c-w><c-c>
 nnoremap <silent> <c-l> :nohls<cr><c-l>
 nnoremap <silent> <space><space> :wa<cr>
 nnoremap <silent> <space>so :so %<cr>
-nnoremap <space>e :vs ~/Documents/projects/Dotfiles/vimfiles/.vim/simple.vim<cr>
+nnoremap <space>e :vs $VIMHOME/simple.vim<cr>
 nnoremap <leader><c-l> :mes clear<cr>:nohls<cr><c-l>
 
 inoremap jk <esc>
@@ -153,7 +150,6 @@ tnoremap ]t <c-w>gT
 nnoremap ]b :bnext<cr>
 nnoremap [b :bprevious<cr>
 nnoremap <space>b :b <c-d>
-" nnoremap <space>be :e **/
 nnoremap <space>bq :b#<cr>
 nnoremap <space>bo :BufOnly<cr>
 nnoremap <space>bf :bfirst<cr>
@@ -163,7 +159,7 @@ command! BufOnly execute '%bdelete|edit#|bdelete#'
 " dir {{{2
 nnoremap <space>d :pwd<cr>
 if has("win32unix")
-	nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
+    nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
 endif
 
 " cmdline {{{2
@@ -177,20 +173,27 @@ nnoremap [<space> O<esc>j
 nnoremap [<space>d kdd
 nnoremap ]<space> o<esc>k
 nnoremap ]<space>d jddk
-" nnoremap <space>lj <c-d>
-" nnoremap <space>lk <c-u>
 nnoremap <space>lb _
 nnoremap <space>le g_
 nnoremap <space>ls :call <SID>stripTrailingWhitespace()<cr>
 function! s:stripTrailingWhitespace()
-	if !&binary && &filetype != 'diff'
-		normal mz
-		normal Hmy
-		%s/\s\+$//e
-		normal 'yz<cr>
-		normal 'z
-	endif
+    if !&binary && &filetype != 'diff'
+        normal mz
+        normal Hmy
+        %s/\s\+$//e
+        normal 'yz<cr>
+        normal 'z
+    endif
 endfunction
+
+" quickfix {{{2
+nnoremap <space>cc :cclose<cr>
+nnoremap <space>qc :call setqflist([], 'f')<cr>
+nnoremap <space>qo :colder<cr>
+nnoremap <space>qn :cnewer<cr>
+
+" location {{{2
+nnoremap <space>lc :call setloclist(0, [], 'f')<cr>:lclose<cr>
 
 " functionality {{{2
 nnoremap g* *N
@@ -200,19 +203,19 @@ vnoremap g* *N
 xnoremap * :call <SID>VSetSearch()<cr>/<c-r>=@/<cr><cr>
 xnoremap # :call <SID>VSetSearch()<cr>?<c-r>=@/<cr><cr>
 function! s:VSetSearch()
-	let temp = @s
-	normal! gv"sy
-	let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
-	let @s = temp
+    let temp = @s
+    normal! gv"sy
+    let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
+    let @s = temp
 endfunction
 
 " toggle {{{2
 nnoremap yot :terminal<cr>
 tnoremap yot <c-w>:hide<cr>
-
 nnoremap yop :set paste!<cr>
 nnoremap yog :Git<cr>
 nnoremap yoq :cwindow<cr>
+nnoremap yol :lopen<cr>
 "
 " tags
 "set tags=./.tags;,.tags
@@ -225,22 +228,17 @@ set grepformat+=%f
 nnoremap <leader>m :make<cr>
 nnoremap <leader>g :grep<space>
 nnoremap <leader>gl :lgrep<space>
-
-" quickfix {{{2
-nnoremap <space>cc :cclose<cr>
-nnoremap <space>qc :call setqflist([], 'f')<cr>
-nnoremap <space>qo :colder<cr>
-nnoremap <space>qn :cnewer<cr>
+nnoremap <leader>glf :lgrep -g<space>
 
 " args {{{2
 " add all filenames of qf to args list
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
 function! QuickfixFilenames()
-	let buffer_numbers = {}
-	for quickfix_item in getqflist()
-		let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
-	endfor
-	return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+    let buffer_numbers = {}
+    for quickfix_item in getqflist()
+        let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+    endfor
+    return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
 " Plugins {{{1

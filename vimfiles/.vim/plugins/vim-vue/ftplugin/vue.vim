@@ -9,6 +9,7 @@ setlocal scrolloff=2
 setlocal sw=2
 setlocal tabstop=2
 setlocal makeprg=yarn\ test
+setlocal foldmethod=indent
 
 " tags
 let s:tag_end = '$%k$'

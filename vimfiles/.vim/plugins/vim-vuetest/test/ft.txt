@@ -1,6 +1,6 @@
 
-sum.vim
-sum.vue
-sum.js
+sum2.vim
+sum3.vue
+sum2222222.js
 sum.spec.js2
-sum.js.spec.js
+sum.js.spec.js3
