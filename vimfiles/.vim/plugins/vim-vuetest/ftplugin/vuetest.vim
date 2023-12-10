@@ -19,7 +19,6 @@ setlocal makeprg=yarn\ test
 nnoremap <buffer> <leader>m :call <SID>Make()<cr>
 nnoremap <buffer> <leader>tc :call <SID>CloseTermWindow()<cr>
 
-
 if exists('s:load_ft_vuetest_vim')
 	finish
 endif
@@ -31,7 +30,6 @@ const term_job = 'vt_t_job'
 # term variables
 def GetTerminalBufnr(): number
 	const bufnr = get(t:, term_bufnr, -1)
-	echomsg 'GetTerminalBufnr, bufnr: ' .. bufnr
 	return bufnr
 enddef
 
@@ -50,7 +48,6 @@ def Make()
 		settabvar(0, term_bufnr, res.bufnr)
 
 		if has_key(res, 'job') && type(res.job) == v:t_job
-			echomsg 'update t: job: ' .. string(res.job) .. ", for bufnr: " .. res.bufnr
 			setbufvar(res.bufnr, term_job, res.job)
 		endif
 		call win_gotoid(cwid)

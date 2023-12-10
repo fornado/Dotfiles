@@ -44,13 +44,8 @@ def Compile()
 	# &makeprg = temp
 
 	const cmd = '/g/study/vue/demo/vue-project/abc.sh'
-	# echomsg 'cmd: '
-	# echomsg cmd
 	# const job = job_start(cmd)
 	const job = job_start(cmd, {'out_io': 'buffer', 'out_name': 'log'})
-	#
-	# # job = job_start('npm run lint')
-	# echomsg 'job status: ' .. job_status(job)
 enddef
 
 # RunTermJob

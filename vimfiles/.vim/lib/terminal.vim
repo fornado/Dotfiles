@@ -40,15 +40,12 @@ def CreateAWindow()
 enddef
 
 def CreateTerminalWindow(): dict<any>
-	echomsg "call CreateTerminalWindow..."
-
 	const cd = haslocaldir() ? ((haslocaldir() == 1) ? 'lcd' : 'tcd') : 'cd'
 	const savedir = getcwd()
 	const workdir = (expand('%') == '') ? getcwd() : expand('%:p:h')
 	silent execute cd .. ' ' .. fnameescape(workdir)
 
 	CreateAWindow()
-
 	const data = CreateAJob()
 
 	silent execute cd .. ' ' .. fnameescape(savedir)
@@ -73,7 +70,6 @@ export def TerminalClose(bufnr: number, GetJob: func: job): dict<any>
  	endif
 
  	if dead
-		echomsg 'delete buf with dead job, bufnr: ' .. bufnr
  		execute 'bdelete! ' .. bufnr
  	endif
 	return { type: 'close', bufnr: bufnr }
