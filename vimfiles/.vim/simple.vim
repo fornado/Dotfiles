@@ -220,8 +220,11 @@ nnoremap yoq :cwindow<cr>
 " nnoremap <leader>j :tjump /
 
 " make&grep {{{2
+set grepprg=ag\ --nogroup\ --vimgrep
+set grepformat+=%f
 nnoremap <leader>m :make<cr>
 nnoremap <leader>g :grep<space>
+nnoremap <leader>gl :lgrep<space>
 
 " quickfix {{{2
 nnoremap <space>cc :cclose<cr>

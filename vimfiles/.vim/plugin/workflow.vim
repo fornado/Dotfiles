@@ -1,9 +1,9 @@
 vim9script
 
 if exists("g:loaded_workflow")
-	# finish
+	finish
 endif
-# const g:loaded_workflow = 1
+const g:loaded_workflow = 1
 
 import autoload "../lib/terminal.vim" as term
 

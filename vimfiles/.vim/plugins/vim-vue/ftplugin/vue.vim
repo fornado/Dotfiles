@@ -6,6 +6,7 @@
 
 " options
 setlocal scrolloff=2
+setlocal sw=2
 setlocal tabstop=2
 setlocal makeprg=yarn\ test
 
@@ -23,6 +24,7 @@ let s:tags = {
 
 " pattern
 let s:func_pattern = '^\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
+echomsg 'load ftplugin vue.vim'
 
 " buffer maps
 nnoremap <buffer> <leader>b :<c-u>call <SID>Jump2Tag(1)<cr>
