@@ -3,12 +3,10 @@ source $VIMRUNTIME/defaults.vim
 packadd! matchit
 
 " Basic {{{1
-let $VIMHOME = $HOME . '/.vim'
-if has('win32') || has ('win64')
-	let $VIMHOME = $VIM . '/vimfiles'
-endif
+let $VIMHOME = $HOME . '/Documents/projects/Dotfiles/vimfiles/.vim'
 
-let $PLUGINS = $HOME . '/Documents/projects/Dotfiles/vimfiles/.vim/plugins'
+let $PLUGINS = $VIMHOME . '/plugins'
+let $LIB = $VIMHOME . '/lib'
 let $VUETEST = $PLUGINS . '/vim-vuetest'
 " let temp = &rtp
 " set rtp=$VUETEST
