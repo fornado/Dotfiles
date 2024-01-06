@@ -25,7 +25,6 @@ let s:tags = {
 
 " pattern
 let s:func_pattern = '^\s\+[A-Za-z0-9]\+\s\?(.*)\s\?{'
-echomsg 'load ftplugin vue.vim'
 
 " buffer maps
 nnoremap <buffer> <leader>b :<c-u>call <SID>Jump2Tag(1)<cr>
@@ -132,7 +131,6 @@ function! s:getCommentaryFormat()
 			break
 		endif
 	endfor
-	echomsg 'getCommentaryFormat:' .commentary_format
 	return commentary_format
 endfunction
 
@@ -153,7 +151,6 @@ function! s:Commentary(...) abort
 	endif
 
 	let cmd = ''. lnum1 . ',' . lnum2 . 'Commentary'
-	echomsg 'cmd:' . cmd
 	silent execute cmd
 
 	if !empty(format)

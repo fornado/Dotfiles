@@ -1,22 +1,28 @@
 vim9script noclear
 
-export def Close(bufnr: number): bool
-	const name = bufname(bufnr)
-	const wid = bufwinnr(bufnr)
-	if bufnr < 0 || name == '' || wid < 0
-		echomsg 'close failure...'
-		return false
-	endif
+import autoload $LIB .. "/buffer.vim" as Buffer
 
+# create
+export def Create(options: dict<string> = {})
+  const split = get(options, 'split', 'vs')
+  execute split
+	setlocal nonumber norelativenumber signcolumn=no
+	setlocal bufhidden=hide
+enddef
+
+# close window of bufnr, return true or false
+export def Close(bufnr: number): bool
+  if !Buffer.IsActive
+    return false
+  endif
+
+	const wid = bufwinnr(bufnr)
 	if wid != winnr()
-		echomsg 'not cur win, wid: ' .. wid
 		const cwid = win_getid()
 		execute "normal! " .. wid .. "\<c-w>w"
 		close
-		echomsg 'back after close to window: ' .. cwid
 		call win_gotoid(cwid)
 	else
-		echomsg 'is cur win, close'
 		close
 	endif
 	return true

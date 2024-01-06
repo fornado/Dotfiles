@@ -7,12 +7,15 @@ let $VIMHOME = $HOME . '/Documents/projects/Dotfiles/vimfiles/.vim'
 let $PLUGINS = $VIMHOME . '/plugins'
 let $LIB = $VIMHOME . '/lib'
 let $VUETEST = $PLUGINS . '/vim-vuetest'
+let $SCHEME = $PLUGINS . '/vim-scheme'
 
 set rtp+=$VUETEST
+set rtp+=$SCHEME
 
 " options {{{2
 let mapleader = ","
 "set foldmethod=marker
+setlocal foldmethod=marker
 
 set number
 set relativenumber
@@ -100,7 +103,6 @@ nnoremap <space>wK <c-w>K
 nnoremap <space>wH <c-w>H
 nnoremap <space>wL <c-w>L
 nnoremap <space>wT <c-w>T
-"nnoremap <space>pq :pclose<cr>
 
 " terminal {{{2
 tnoremap <space>wj <c-w>j
@@ -137,7 +139,6 @@ nnoremap <space>tf :tabfirst<cr>
 nnoremap <space>tl :tablast<cr>
 nnoremap [t :tabprevious<cr>
 nnoremap ]t :tabnext<cr>
-
 tnoremap <space>tn <c-w>:tabnew<cr>
 tnoremap <space>tc <c-w>:tabclose<cr>
 tnoremap <space>to <c-w>:tabonly<cr>
@@ -241,7 +242,7 @@ function! QuickfixFilenames()
     return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
-" Plugins {{{1
+" plugins {{{1
 " Netrw {{{2
 let g:netrw_usetab = 1
 let g:netrw_banner=1

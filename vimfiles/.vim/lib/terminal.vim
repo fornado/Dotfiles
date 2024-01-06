@@ -1,69 +1,51 @@
-vim9script
+vim9script noclear
 
-import autoload "./window.vim" as window
-import autoload "./buffer.vim" as buffer
+import autoload $LIB .. "/window.vim" as Window
+import autoload $LIB .. "/buffer.vim" as Buffer
+import autoload $LIB .. "/job.vim" as Job
 
-# terminal toggle
-#	return { type: 'open', bufnr: 1, job: Job }
-export def TerminalToggle(bufnr: number, GetJob: func: job): dict<any>
-	const active = buffer.IsActive(bufnr)
-	if !active
-		return TerminalOpen(bufnr)
+# toggle terminal window
+export def Toggle(bufnr: number = -1): number
+	const isActive = Buffer.IsActive(bufnr)
+	if !isActive
+		return Open(bufnr)
 	else
-		return TerminalClose(bufnr, getJob)
+		return Close(bufnr)
 	endif
 enddef
 
-# open terminal window
-export def TerminalOpen(bufnr: number): dict<any>
-	const isCreated = bufname(bufnr) != ''
-
-	var res = { type: 'open', bufnr: bufnr }
-	const wid = bufwinnr(bufnr)
-	if !isCreated
-		const data = CreateTerminalWindow()
-		res.bufnr = data.bufnr
-		res.job = data.job
+# open a terminal window
+export def Open(bufnr: number = -1): number
+	var nr = bufnr
+	const wid = bufwinnr(nr)
+	if nr < 0
+		nr = CreateBufWindow()
 	elseif wid < 0
-		CreateAWindow()
-		execute 'b ' .. bufnr
+		Window.Create()
+		execute 'b ' .. nr
 	else
 		execute "normal! " .. wid .. "\<c-w>w"
 	endif
-	return res
+	return nr
 enddef
 
-def CreateAWindow()
-	execute 'rightbelow split'
-	setlocal nonumber norelativenumber signcolumn=no
-	setlocal bufhidden=hide
-enddef
-
-def CreateTerminalWindow(): dict<any>
+def CreateBufWindow(): number
 	const cd = haslocaldir() ? ((haslocaldir() == 1) ? 'lcd' : 'tcd') : 'cd'
 	const savedir = getcwd()
 	const workdir = (expand('%') == '') ? getcwd() : expand('%:p:h')
 	silent execute cd .. ' ' .. fnameescape(workdir)
 
-	CreateAWindow()
-	const data = CreateAJob()
+	Window.Create()
+	const bufnr = Job.Create()
 
 	silent execute cd .. ' ' .. fnameescape(savedir)
-	return data
+	return bufnr
 enddef
 
-def CreateAJob(): dict<any>
-	const opts = {'curwin': 1, 'norestore': 1, 'term_finish': 'open'}
-	const bufnr = term_start(&shell, opts)
-	const job = term_getjob(bufnr)
+export def Close(bufnr: number = -1)
+	Window.Close(bufnr)
 
-	return { bufnr: bufnr, job: job }
-enddef
-
-export def TerminalClose(bufnr: number, GetJob: func: job): dict<any>
-	window.Close(bufnr)
-
-	const job = GetJob(bufnr)
+	const job = Job.Get(bufnr)
  	var dead = false
  	if type(job) == v:t_job
  		dead = job_status(job) == 'dead'
@@ -72,5 +54,4 @@ export def TerminalClose(bufnr: number, GetJob: func: job): dict<any>
  	if dead
  		execute 'bdelete! ' .. bufnr
  	endif
-	return { type: 'close', bufnr: bufnr }
 enddef

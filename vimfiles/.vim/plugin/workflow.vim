@@ -48,16 +48,16 @@ def Compile()
 	const job = job_start(cmd, {'out_io': 'buffer', 'out_name': 'log'})
 enddef
 
-# RunTermJob
-nnoremap <leader>r :<c-u>call <SID>RunTermJob()<cr>
-def RunTermJob()
-	const runcmd = &makeprg
-	const cmd = runcmd .. " " .. expand("%:p") .. "\<CR>"
-	call term_sendkeys(2, cmd)
-enddef
+# # RunTermJob
+# nnoremap <leader>r :<c-u>call <SID>RunTermJob()<cr>
+# def RunTermJob()
+# 	const runcmd = &makeprg
+# 	const cmd = runcmd .. " " .. expand("%:p") .. "\<CR>"
+# 	call term_sendkeys(2, cmd)
+# enddef
 
-# ClearTerm
-nnoremap <leader><c-l> :<c-u>call <SID>ClearTerm()<cr>
-def ClearTerm()
-	call term_sendkeys(2, "clear\<CR>")
-enddef
+# # ClearTerm
+# nnoremap <leader><c-l> :<c-u>call <SID>ClearTerm()<cr>
+# def ClearTerm()
+# 	call term_sendkeys(2, "clear\<CR>")
+# enddef
