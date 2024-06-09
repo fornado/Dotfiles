@@ -1,5 +1,9 @@
 " plugins {{{1
-call plug#begin('/d/dotfiles/vimfiles/.vim/plugged')
+if has('gui_running')
+	call plug#begin('~/Documents/dotfiles/vimfiles/.vim/plugged')
+else
+	call plug#begin('/d/dotfiles/vimfiles/.vim/plugged')
+endif
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'yianwillis/vimcdoc'
 Plug 'vim-airline/vim-airline'
