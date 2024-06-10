@@ -90,6 +90,8 @@ nnoremap <space>wK <c-w>K
 nnoremap <space>wH <c-w>H
 nnoremap <space>wL <c-w>L
 nnoremap <space>wT <c-w>T
+nnoremap <space>pc <c-w><c-z>
+nnoremap <space>pj :wincmd P<cr>
 
 " terminal {{{3
 tnoremap <space>wj <c-w>j
