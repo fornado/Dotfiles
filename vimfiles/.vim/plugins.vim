@@ -79,7 +79,7 @@ let g:ale_keep_list_window_open = 0
 
 let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {
-\ 'vue': ['eslint'],
+\ 'vue': ['eslint', 'volar'],
 \ 'python': ['pyright'],
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
@@ -93,3 +93,4 @@ let g:ale_fixers = {
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> <C-]> <Plug>(ale_go_to_definition)
