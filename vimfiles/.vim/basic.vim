@@ -147,7 +147,7 @@ nnoremap <space>bl :blast<cr>
 command! BufOnly execute '%bdelete|edit#|bdelete#'
 
 " dir {{{3
-nnoremap <space>d :pwd<cr>
+nnoremap <space>ds :pwd<cr>
 if has("win32unix")
     nnoremap <silent> <leader>tf :!start<space><c-r>=expand("%:p:h")<cr>/<cr>
 endif
