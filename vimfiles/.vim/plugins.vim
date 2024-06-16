@@ -28,6 +28,8 @@ Plug 'junegunn/seoul256.vim'
 "Plug 'kana/vim-textobj-lastpat'
 "Plug 'mattn/emmet-vim'
 "Plug 'sheerun/vim-polyglot'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 call plug#end()
 
 " vim-airline {{{2
@@ -93,4 +95,8 @@ let g:ale_fixers = {
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
-nmap <silent> <C-]> <Plug>(ale_go_to_definition)
+" nmap <silent> <C-]> <Plug>(ale_go_to_definition)
+
+" vim-lsp-settings
+let g:lsp_settings_filetype_vue = ['typescript-language-server', 'volar-server']
+nmap <silent> <C-]> <Plug>(lsp-definition)
